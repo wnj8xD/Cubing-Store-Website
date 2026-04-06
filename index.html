@@ -1,0 +1,2984 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CubeVerse – Rubik's Cube Store</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,700;0,900;1,400&family=Lexend+Deca:wght@400;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
+
+<style>
+
+/* ==============================
+   RESET CƠ BẢN
+   ============================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: #050d1a;
+  color: #e8f4ff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  overflow-x: hidden;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+img {
+  display: block;
+  width: 100%;
+}
+
+ul {
+  list-style: none;
+}
+
+/* ==============================
+   SCROLLBAR
+   ============================== */
+::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar-track { background: #050d1a; }
+::-webkit-scrollbar-thumb { background: #0072ff; border-radius: 99px; }
+
+/* ==============================
+   TIỆN ÍCH CHUNG
+   ============================== */
+.container {
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+/* Nút chính */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 22px;
+  border-radius: 6px;
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  cursor: pointer;
+  border: none;
+  transition: transform 0.2s, box-shadow 0.2s, opacity 0.2s;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  color: #fff;
+  box-shadow: 0 4px 20px rgba(0, 114, 255, 0.4);
+}
+
+.btn-primary:hover {
+  box-shadow: 0 4px 32px rgba(0, 180, 255, 0.6);
+  transform: translateY(-2px);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #00b4ff;
+  border: 1.5px solid #00b4ff;
+}
+
+.btn-outline:hover {
+  background: rgba(0, 180, 255, 0.1);
+}
+
+/* Nhãn section */
+.section-label {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #00b4ff;
+  opacity: 0.8;
+  margin-bottom: 8px;
+}
+
+.section-title {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 38px;
+  font-weight: 700;
+  line-height: 1.15;
+  background: linear-gradient(135deg, #e8f4ff, #7ac0e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.glow-line {
+  width: 48px;
+  height: 3px;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  border-radius: 99px;
+  margin-top: 12px;
+  margin-bottom: 36px;
+}
+
+/* Tags */
+.tag {
+  display: inline-block;
+  padding: 3px 10px;
+  border-radius: 99px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+}
+
+.tag-blue {
+  background: rgba(0, 180, 255, 0.15);
+  color: #00b4ff;
+  border: 1px solid rgba(0, 180, 255, 0.25);
+}
+
+.tag-red {
+  background: rgba(255, 61, 110, 0.15);
+  color: #ff3d6e;
+  border: 1px solid rgba(255, 61, 110, 0.25);
+}
+
+.tag-gold {
+  background: rgba(255, 203, 47, 0.12);
+  color: #ffcb2f;
+  border: 1px solid rgba(255, 203, 47, 0.2);
+}
+
+/* ==============================
+   HEADER
+   ============================== */
+#header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 900;
+  transition: background 0.3s, box-shadow 0.3s;
+}
+
+#header.scrolled {
+  background: rgba(5, 13, 26, 0.95);
+  box-shadow: 0 1px 0 rgba(0, 180, 255, 0.12), 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.header-top {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 14px 24px;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  letter-spacing: 0.05em;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+.logo-icon {
+  width: 36px;
+  height: 36px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 4px;
+  background: rgba(0, 180, 255, 0.08);
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  border-radius: 8px;
+}
+
+.logo-icon span {
+  border-radius: 2px;
+}
+
+.logo-icon span:nth-child(1) { background: #ff3d6e; }
+.logo-icon span:nth-child(2) { background: #ffcb2f; }
+.logo-icon span:nth-child(3) { background: #00ffe0; }
+.logo-icon span:nth-child(4) { background: #00b4ff; }
+.logo-icon span:nth-child(5) { background: rgba(255,255,255,0.7); }
+.logo-icon span:nth-child(6) { background: #ff7043; }
+.logo-icon span:nth-child(7) { background: #00ffe0; }
+.logo-icon span:nth-child(8) { background: #ff3d6e; }
+.logo-icon span:nth-child(9) { background: #ffcb2f; }
+
+.logo-text-blue { color: #00b4ff; }
+
+/* Thanh tìm kiếm */
+.search-wrap {
+  flex: 1;
+  max-width: 420px;
+  position: relative;
+}
+
+.search-wrap input {
+  width: 100%;
+  padding: 9px 70px 9px 16px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  border-radius: 6px;
+  color: #e8f4ff;
+  font-size: 13px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.search-wrap input::placeholder { color: #5a7a99; }
+
+.search-wrap input:focus {
+  outline: none;
+  border-color: rgba(0, 180, 255, 0.45);
+  background: rgba(0, 180, 255, 0.06);
+}
+
+.search-btn {
+  position: absolute;
+  right: 4px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  border: none;
+  border-radius: 4px;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 5px 12px;
+  cursor: pointer;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: opacity 0.2s;
+}
+
+.search-btn:hover { opacity: 0.85; }
+
+/* Nút đăng nhập */
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+  flex-shrink: 0;
+}
+
+.auth-btn {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  padding: 8px 16px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid rgba(0, 180, 255, 0.3);
+  background: rgba(0, 180, 255, 0.06);
+  color: #e8f4ff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.auth-btn:hover {
+  border-color: #00b4ff;
+  background: rgba(0, 180, 255, 0.12);
+}
+
+.cart-btn {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 6px;
+  background: rgba(0, 180, 255, 0.08);
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  color: #e8f4ff;
+}
+
+.cart-btn:hover {
+  border-color: #00b4ff;
+  background: rgba(0, 180, 255, 0.15);
+}
+
+.cart-badge {
+  position: absolute;
+  top: -5px;
+  right: -5px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #ff3d6e;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* ==============================
+   NAV BAR
+   ============================== */
+#navbar {
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+  background: rgba(8, 15, 30, 0.85);
+}
+
+.nav-inner {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.nav-item {
+  position: relative;
+}
+
+.nav-link {
+  display: block;
+  padding: 13px 16px;
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: rgba(232, 244, 255, 0.75);
+  cursor: pointer;
+  transition: color 0.2s;
+  white-space: nowrap;
+  border-bottom: 2px solid transparent;
+}
+
+.nav-link:hover {
+  color: #e8f4ff;
+  border-bottom-color: #00b4ff;
+}
+
+/* Dropdown menu */
+.nav-dropdown {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  padding: 10px;
+  background: rgba(8, 16, 32, 0.98);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 0 12px 12px 12px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+  display: none;
+}
+
+.nav-item:hover .nav-dropdown {
+  display: block;
+}
+
+.nav-dropdown a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  color: rgba(232, 244, 255, 0.7);
+  transition: background 0.2s, color 0.2s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.nav-dropdown a:hover {
+  color: #e8f4ff;
+  background: rgba(0, 180, 255, 0.1);
+}
+
+.dd-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(0, 180, 255, 0.1);
+  border: 1px solid rgba(0, 180, 255, 0.15);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 13px;
+  flex-shrink: 0;
+}
+
+.nav-promo {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: 12px;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ==============================
+   HERO
+   ============================== */
+#hero {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  padding-top: 100px;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #050d1a, #0a1628, #071220);
+}
+
+.hero-grid {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background-image:
+    linear-gradient(rgba(0, 180, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 180, 255, 0.06) 1px, transparent 1px);
+  background-size: 60px 60px;
+}
+
+.hero-orb-1 {
+  position: absolute;
+  width: 600px;
+  height: 600px;
+  border-radius: 50%;
+  background: rgba(0, 114, 255, 0.15);
+  filter: blur(80px);
+  top: -100px;
+  right: -100px;
+  pointer-events: none;
+}
+
+.hero-orb-2 {
+  position: absolute;
+  width: 400px;
+  height: 400px;
+  border-radius: 50%;
+  background: rgba(0, 255, 224, 0.08);
+  filter: blur(80px);
+  bottom: 0;
+  left: -100px;
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative;
+  z-index: 2;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 60px;
+  align-items: center;
+  max-width: 1280px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: 24px;
+  padding-right: 24px;
+  width: 100%;
+}
+
+.hero-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 14px 6px 6px;
+  border-radius: 99px;
+  background: rgba(0, 180, 255, 0.1);
+  border: 1px solid rgba(0, 180, 255, 0.25);
+  font-size: 12px;
+  font-weight: 600;
+  color: #00b4ff;
+  margin-bottom: 24px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.hero-badge-dot {
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+}
+
+.hero-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 64px;
+  font-weight: 900;
+  line-height: 1.05;
+  margin-bottom: 20px;
+}
+
+.hero-title .line1 {
+  display: block;
+  color: #e8f4ff;
+}
+
+.hero-title .line2 {
+  display: block;
+  background: linear-gradient(90deg, #00b4ff, #00ffe0);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hero-sub {
+  font-size: 16px;
+  color: rgba(232, 244, 255, 0.6);
+  max-width: 420px;
+  line-height: 1.7;
+  margin-bottom: 36px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.hero-cta {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.hero-stats {
+  display: flex;
+  gap: 36px;
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+}
+
+.stat-num {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  color: #00b4ff;
+  line-height: 1;
+}
+
+.stat-label {
+  font-size: 12px;
+  color: #5a7a99;
+  margin-top: 4px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* Cube 3D */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+}
+
+.hero-cube-stage {
+  width: 340px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.cube-glow-ring {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 180, 255, 0.15);
+  animation: ringPulse 3s ease-in-out infinite;
+}
+
+@keyframes ringPulse {
+  0%, 100% { box-shadow: 0 0 30px rgba(0, 180, 255, 0.2); }
+  50%       { box-shadow: 0 0 60px rgba(0, 180, 255, 0.4); }
+}
+
+.cube-3d {
+  width: 140px;
+  height: 140px;
+  transform-style: preserve-3d;
+  animation: cubeRotate 12s linear infinite;
+  position: relative;
+}
+
+@keyframes cubeRotate {
+  from { transform: rotateX(-20deg) rotateY(0deg); }
+  to   { transform: rotateX(-20deg) rotateY(360deg); }
+}
+
+.cube-face {
+  position: absolute;
+  width: 140px;
+  height: 140px;
+  border: 2px solid rgba(0, 180, 255, 0.3);
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  gap: 4px;
+  padding: 8px;
+  background: rgba(8, 15, 30, 0.6);
+}
+
+.cube-face .sticker { border-radius: 4px; }
+
+.face-front  { transform: translateZ(70px); }
+.face-back   { transform: rotateY(180deg) translateZ(70px); }
+.face-right  { transform: rotateY(90deg) translateZ(70px); }
+.face-left   { transform: rotateY(-90deg) translateZ(70px); }
+.face-top    { transform: rotateX(90deg) translateZ(70px); }
+.face-bottom { transform: rotateX(-90deg) translateZ(70px); }
+
+.face-front  .sticker { background: #ff3d6e; }
+.face-back   .sticker { background: #ff7043; }
+.face-right  .sticker { background: #00b4ff; }
+.face-left   .sticker { background: #00ffe0; }
+.face-top    .sticker { background: #ffcb2f; }
+.face-bottom .sticker { background: #4caf50; }
+
+.hero-float-card {
+  position: absolute;
+  background: rgba(10, 22, 40, 0.9);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 12px;
+  padding: 10px 14px;
+  animation: floatY 4s ease-in-out infinite alternate;
+}
+
+.float-card-1 { top: 20px; left: -20px; animation-delay: 0s; }
+.float-card-2 { bottom: 40px; right: -10px; animation-delay: -2s; }
+.float-card-3 { top: 50%; right: -30px; transform: translateY(-50%); }
+
+@keyframes floatY {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-10px); }
+}
+
+.fcard-label {
+  font-size: 10px;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+.fcard-val {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  color: #00b4ff;
+}
+
+.fcard-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.fcard-emoji { font-size: 22px; }
+
+/* ==============================
+   TICKER
+   ============================== */
+#ticker {
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  padding: 10px 0;
+  overflow: hidden;
+}
+
+.ticker-track {
+  display: flex;
+  animation: tickerScroll 30s linear infinite;
+  width: max-content;
+}
+
+@keyframes tickerScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.ticker-item {
+  white-space: nowrap;
+  padding: 0 40px;
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.ticker-item::after {
+  content: '✦';
+  font-size: 10px;
+  opacity: 0.6;
+}
+
+/* ==============================
+   BANNER SLIDER
+   ============================== */
+#banner {
+  padding: 60px 0 0;
+}
+
+.banner-wrapper {
+  position: relative;
+  overflow: hidden;
+  border-radius: 20px;
+}
+
+.banner-track {
+  display: flex;
+  transition: transform 0.7s ease-in-out;
+}
+
+.banner-slide {
+  min-width: 100%;
+  height: 400px;
+  display: flex;
+  align-items: center;
+  border-radius: 20px;
+  overflow: hidden;
+  position: relative;
+}
+
+.banner-bg {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+}
+
+.banner-overlay {
+  position: absolute;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: linear-gradient(90deg, rgba(5,13,26,0.9) 0%, rgba(5,13,26,0.4) 60%, transparent 100%);
+}
+
+.banner-content {
+  position: relative;
+  z-index: 2;
+  padding: 0 60px;
+  max-width: 520px;
+}
+
+.banner-kicker {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.15em;
+  color: #00b4ff;
+  margin-bottom: 10px;
+  text-transform: uppercase;
+}
+
+.banner-h2 {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 36px;
+  font-weight: 700;
+  line-height: 1.2;
+  margin-bottom: 14px;
+}
+
+.banner-p {
+  font-size: 14px;
+  color: rgba(232, 244, 255, 0.7);
+  margin-bottom: 24px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.slide-theme-1 .banner-bg {
+  background-color: #0a1a2e;
+  background-image: radial-gradient(circle at 70% 50%, rgba(0,114,255,0.3), transparent 60%);
+}
+.slide-theme-2 .banner-bg {
+  background-color: #1a0a1a;
+  background-image: radial-gradient(circle at 70% 50%, rgba(255,61,110,0.3), transparent 60%);
+}
+.slide-theme-3 .banner-bg {
+  background-color: #001a15;
+  background-image: radial-gradient(circle at 70% 50%, rgba(0,255,200,0.25), transparent 60%);
+}
+.slide-theme-4 .banner-bg {
+  background-color: #1a1200;
+  background-image: radial-gradient(circle at 70% 50%, rgba(255,203,47,0.25), transparent 60%);
+}
+
+.banner-visual {
+  position: absolute;
+  right: 80px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 120px;
+  line-height: 1;
+  z-index: 2;
+  animation: bannerFloat 6s ease-in-out infinite alternate;
+}
+
+@keyframes bannerFloat {
+  from { transform: translateY(-50%) rotate(-5deg); }
+  to   { transform: translateY(-50%) rotate(5deg); }
+}
+
+.banner-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 5;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: rgba(10, 22, 40, 0.8);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  color: #e8f4ff;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.banner-arrow:hover {
+  border-color: #00b4ff;
+  background: rgba(0, 180, 255, 0.15);
+}
+
+.banner-prev { left: 16px; }
+.banner-next { right: 16px; }
+
+.banner-dots {
+  display: flex;
+  gap: 8px;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.banner-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.2);
+  cursor: pointer;
+  transition: width 0.3s, background 0.3s;
+  border: none;
+}
+
+.banner-dot.active {
+  width: 28px;
+  background: #00b4ff;
+}
+
+/* ==============================
+   FEATURES
+   ============================== */
+#features {
+  background: #0a1628;
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+  padding: 32px 0;
+  margin-top: 60px;
+}
+
+.features-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+}
+
+.feature-item {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 20px;
+  border-radius: 12px;
+  transition: background 0.2s;
+}
+
+.feature-item:hover {
+  background: rgba(0, 180, 255, 0.05);
+}
+
+.feature-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: rgba(0, 180, 255, 0.1);
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  flex-shrink: 0;
+  transition: background 0.2s;
+}
+
+.feature-item:hover .feature-icon {
+  background: rgba(0, 180, 255, 0.2);
+}
+
+.feature-title {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  margin-bottom: 2px;
+}
+
+.feature-desc {
+  font-size: 12px;
+  color: #5a7a99;
+  line-height: 1.4;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ==============================
+   SECTIONS CHUNG
+   ============================== */
+.section {
+  padding: 80px 0;
+}
+
+.section-header {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 16px;
+}
+
+.section-header .glow-line {
+  margin-bottom: 0;
+}
+
+.view-all-link {
+  font-size: 13px;
+  font-weight: 600;
+  color: #00b4ff;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  transition: gap 0.2s;
+  white-space: nowrap;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.view-all-link:hover {
+  gap: 10px;
+}
+
+/* ==============================
+   DANH MỤC
+   ============================== */
+.cats-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+  margin-top: 40px;
+}
+
+.cat-card {
+  border-radius: 12px;
+  overflow: hidden;
+  aspect-ratio: 1;
+  cursor: pointer;
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  transition: transform 0.25s, border-color 0.25s, box-shadow 0.25s;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.cat-card:hover {
+  transform: translateY(-6px);
+  border-color: rgba(0, 180, 255, 0.3);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.3);
+}
+
+.cat-card:hover .cat-icon {
+  transform: scale(1.15) rotate(-5deg);
+}
+
+.cat-icon {
+  font-size: 40px;
+  transition: transform 0.25s;
+}
+
+.cat-name {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8f4ff;
+}
+
+.cat-count {
+  font-size: 11px;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.cat-card:hover .cat-name {
+  color: #00b4ff;
+}
+
+.cat-featured {
+  grid-column: span 2;
+  aspect-ratio: 2/1;
+  flex-direction: row;
+  justify-content: flex-start;
+  padding: 24px;
+  gap: 20px;
+}
+
+.cat-featured .cat-icon { font-size: 64px; }
+.cat-featured .cat-name { font-size: 18px; }
+
+.cat-info {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ==============================
+   PRODUCT CARD & IMAGES
+   ============================== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.product-card {
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+  cursor: pointer;
+  position: relative;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+  border-color: rgba(0, 180, 255, 0.2);
+}
+
+.product-card:hover .product-actions {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/*
+  ============================================================
+  PRODUCT THUMB – Vùng ảnh sản phẩm
+  ============================================================
+  Để chèn ảnh thật, thay giá trị src của thẻ <img class="product-img">
+  bên trong mỗi .product-thumb bằng URL ảnh của bạn.
+  Ví dụ: src="https://example.com/anh-san-pham.jpg"
+  ============================================================
+*/
+.product-thumb {
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: linear-gradient(135deg, #0d1c35, rgba(0, 180, 255, 0.05));
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+  overflow: hidden;
+}
+
+/* Ảnh sản phẩm thật */
+.product-img {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  padding: 20px;
+  transition: transform 0.4s ease;
+  display: block;
+}
+
+.product-card:hover .product-img {
+  transform: scale(1.1);
+}
+
+/* Placeholder khi chưa có ảnh – hiện logo chữ */
+.product-img-placeholder {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  color: rgba(0, 180, 255, 0.3);
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-img-placeholder {
+  transform: scale(1.05);
+}
+
+.product-img-placeholder svg {
+  width: 48px;
+  height: 48px;
+  opacity: 0.4;
+}
+
+.product-img-placeholder span {
+  font-size: 11px;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.product-badge-wrap {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  z-index: 2;
+}
+
+/* Quick actions */
+.product-actions {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  display: flex;
+  gap: 8px;
+  padding: 12px;
+  background: linear-gradient(to top, rgba(5,13,26,0.95), transparent);
+  opacity: 0;
+  transform: translateY(8px);
+  transition: opacity 0.25s, transform 0.25s;
+  z-index: 2;
+}
+
+.product-actions .btn {
+  flex: 1;
+  justify-content: center;
+  font-size: 12px;
+  padding: 8px;
+}
+
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(8, 15, 30, 0.8);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  color: #5a7a99;
+  z-index: 2;
+}
+
+.wishlist-btn:hover {
+  border-color: #ff3d6e;
+  color: #ff3d6e;
+  background: rgba(255, 61, 110, 0.1);
+}
+
+.product-info {
+  padding: 16px;
+}
+
+.product-name {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 14px;
+  font-weight: 600;
+  color: #e8f4ff;
+  margin-bottom: 6px;
+  line-height: 1.3;
+}
+
+.product-brand {
+  font-size: 11px;
+  color: #5a7a99;
+  margin-bottom: 10px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.product-meta {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.product-price {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 17px;
+  font-weight: 700;
+  color: #00b4ff;
+}
+
+.product-price-old {
+  font-size: 12px;
+  color: #5a7a99;
+  text-decoration: line-through;
+  margin-left: 6px;
+}
+
+.product-stars {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.star { color: #ffcb2f; font-size: 11px; }
+.star-count {
+  font-size: 11px;
+  color: #5a7a99;
+  margin-left: 3px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ==============================
+   TABS
+   ============================== */
+.tabs {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 32px;
+}
+
+.tab-btn {
+  padding: 8px 20px;
+  border-radius: 99px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  background: transparent;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: background 0.2s, color 0.2s, border-color 0.2s;
+}
+
+.tab-btn.active {
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  color: #fff;
+  border-color: transparent;
+  box-shadow: 0 4px 16px rgba(0, 114, 255, 0.4);
+}
+
+.tab-btn:hover:not(.active) {
+  border-color: #00b4ff;
+  color: #e8f4ff;
+}
+
+.tab-panel {
+  display: none;
+}
+
+.tab-panel.active {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 20px;
+}
+
+/* ==============================
+   BRAND STRIP
+   ============================== */
+#brands {
+  padding: 60px 0;
+}
+
+.brands-wrap {
+  overflow: hidden;
+}
+
+.brands-track {
+  display: flex;
+  animation: brandsScroll 20s linear infinite;
+  width: max-content;
+}
+
+@keyframes brandsScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+.brand-item {
+  padding: 12px 36px;
+  white-space: nowrap;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #5a7a99;
+  letter-spacing: 0.1em;
+  transition: color 0.2s;
+  cursor: default;
+}
+
+.brand-item:hover { color: #00b4ff; }
+
+.brand-sep {
+  color: rgba(0, 180, 255, 0.2);
+  font-size: 20px;
+  display: flex;
+  align-items: center;
+}
+
+/* ==============================
+   PROMO BLOCKS
+   ============================== */
+.promo-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 20px;
+  margin-top: 60px;
+}
+
+.promo-block {
+  border-radius: 20px;
+  padding: 40px;
+  position: relative;
+  overflow: hidden;
+  min-height: 220px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  cursor: pointer;
+  transition: transform 0.2s;
+}
+
+.promo-block:hover { transform: scale(1.01); }
+
+.promo-bg { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+
+.promo-block-1 .promo-bg {
+  background: linear-gradient(135deg, #0d2a4e, #0a1628);
+}
+
+.promo-block-2 .promo-bg {
+  background: linear-gradient(135deg, #2a0d1a, #1a0d2a);
+}
+
+.promo-block-1::before {
+  content: '🏆';
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 100px;
+  opacity: 0.2;
+}
+
+.promo-block-2::before {
+  content: '⚡';
+  position: absolute;
+  right: 30px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 100px;
+  opacity: 0.2;
+}
+
+.promo-content {
+  position: relative;
+  z-index: 1;
+}
+
+.promo-kicker {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  margin-bottom: 8px;
+  text-transform: uppercase;
+}
+
+.promo-h {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.promo-p {
+  font-size: 13px;
+  color: rgba(232, 244, 255, 0.6);
+  margin-bottom: 20px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ==============================
+   COUNTDOWN
+   ============================== */
+#countdown {
+  background: linear-gradient(135deg, #071220, #0d1c35);
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+  padding: 60px 0;
+  text-align: center;
+}
+
+.countdown-inner {
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.countdown-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  margin-bottom: 8px;
+}
+
+.countdown-sub {
+  color: #5a7a99;
+  margin-bottom: 36px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.countdown-clock {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 36px;
+}
+
+.cd-unit {
+  text-align: center;
+  min-width: 80px;
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 12px;
+  padding: 16px 20px;
+}
+
+.cd-num {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 40px;
+  font-weight: 900;
+  color: #00b4ff;
+  line-height: 1;
+}
+
+.cd-label {
+  font-size: 10px;
+  letter-spacing: 0.1em;
+  color: #5a7a99;
+  margin-top: 6px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.cd-sep {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 32px;
+  color: #00b4ff;
+  opacity: 0.5;
+  padding-bottom: 20px;
+  animation: blink 1s infinite;
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 0.5; }
+  50%       { opacity: 0.1; }
+}
+
+/* ==============================
+   NEW ARRIVALS - Cuộn ngang
+   ============================== */
+.h-scroll-wrap {
+  overflow-x: auto;
+  padding-bottom: 12px;
+}
+
+.h-scroll-wrap::-webkit-scrollbar { height: 4px; }
+
+.h-scroll-track {
+  display: flex;
+  gap: 16px;
+  width: max-content;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+
+.h-scroll-track .product-card {
+  width: 220px;
+  flex-shrink: 0;
+}
+
+/* ==============================
+   REVIEWS
+   ============================== */
+#reviews {
+  padding: 80px 0;
+  background: #080f1e;
+}
+
+.reviews-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px;
+  margin-top: 40px;
+}
+
+.review-card {
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 12px;
+  padding: 24px;
+  transition: border-color 0.2s, transform 0.2s;
+}
+
+.review-card:hover {
+  border-color: rgba(0, 180, 255, 0.2);
+  transform: translateY(-4px);
+}
+
+.review-top {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.review-avatar {
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: 'Exo 2', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #fff;
+  flex-shrink: 0;
+}
+
+.review-name {
+  font-weight: 700;
+  font-size: 14px;
+  font-family: 'Lexend Deca', sans-serif;
+}
+.review-date {
+  font-size: 11px;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+.review-text {
+  font-size: 13px;
+  color: rgba(232, 244, 255, 0.7);
+  line-height: 1.65;
+  font-style: italic;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.review-product {
+  font-size: 11px;
+  color: #00b4ff;
+  margin-top: 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ==============================
+   NEWSLETTER
+   ============================== */
+#newsletter {
+  padding: 80px 0;
+  background: radial-gradient(ellipse 80% 60% at 50% 50%, rgba(0,114,255,0.15), transparent);
+}
+
+.newsletter-inner {
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+}
+
+.newsletter-icon { font-size: 48px; margin-bottom: 20px; }
+
+.newsletter-form {
+  display: flex;
+  gap: 10px;
+  margin-top: 28px;
+}
+
+.newsletter-form input {
+  flex: 1;
+  padding: 13px 18px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  border-radius: 6px;
+  color: #e8f4ff;
+  font-size: 14px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.newsletter-form input:focus {
+  outline: none;
+  border-color: #00b4ff;
+  background: rgba(0, 180, 255, 0.06);
+}
+
+.newsletter-form input::placeholder { color: #5a7a99; }
+.newsletter-note {
+  font-size: 12px;
+  color: #5a7a99;
+  margin-top: 12px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ==============================
+   FOOTER
+   ============================== */
+#footer {
+  background: #0a1628;
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+  padding: 64px 0 0;
+}
+
+.footer-grid {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr 1fr 1fr;
+  gap: 40px;
+  padding-bottom: 48px;
+}
+
+.footer-desc {
+  font-size: 13px;
+  color: #5a7a99;
+  line-height: 1.7;
+  max-width: 260px;
+  margin-bottom: 24px;
+  margin-top: 16px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* Social buttons với SVG icon thật */
+.social-row {
+  display: flex;
+  gap: 10px;
+}
+
+.social-btn {
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  background: rgba(255, 255, 255, 0.03);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s, color 0.2s, transform 0.2s;
+  color: #5a7a99;
+  font-size: 16px;
+}
+
+.social-btn:hover {
+  border-color: #00b4ff;
+  background: rgba(0, 180, 255, 0.1);
+  color: #00b4ff;
+  transform: translateY(-2px);
+}
+
+.social-btn svg {
+  width: 16px;
+  height: 16px;
+  fill: currentColor;
+}
+
+/* Facebook hover màu xanh thương hiệu */
+.social-btn.soc-fb:hover  { border-color: #1877f2; background: rgba(24,119,242,0.12); color: #1877f2; }
+/* Instagram hover gradient cam-hồng */
+.social-btn.soc-ig:hover  { border-color: #e1306c; background: rgba(225,48,108,0.12); color: #e1306c; }
+/* YouTube hover đỏ */
+.social-btn.soc-yt:hover  { border-color: #ff0000; background: rgba(255,0,0,0.10); color: #ff0000; }
+/* X trắng */
+.social-btn.soc-x:hover   { border-color: #e8f4ff; background: rgba(232,244,255,0.08); color: #e8f4ff; }
+/* TikTok */
+.social-btn.soc-tt:hover  { border-color: #69c9d0; background: rgba(105,201,208,0.10); color: #69c9d0; }
+
+.footer-col-title {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  color: #e8f4ff;
+  margin-bottom: 16px;
+  letter-spacing: 0.02em;
+}
+
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 9px;
+}
+
+.footer-links a {
+  font-size: 13px;
+  color: #5a7a99;
+  transition: color 0.2s, padding-left 0.2s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.footer-links a:hover {
+  color: #00b4ff;
+  padding-left: 4px;
+}
+
+.footer-newsletter-row {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.footer-newsletter-row input {
+  flex: 1;
+  padding: 10px 14px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  border-radius: 6px;
+  color: #e8f4ff;
+  font-size: 13px;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: border-color 0.2s;
+}
+
+.footer-newsletter-row input::placeholder { color: #5a7a99; }
+.footer-newsletter-row input:focus { outline: none; border-color: #00b4ff; }
+
+.footer-newsletter-btn {
+  padding: 10px 16px;
+  border-radius: 6px;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+  transition: opacity 0.2s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.footer-newsletter-btn:hover { opacity: 0.85; }
+
+.payment-icons {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-top: 16px;
+  flex-wrap: wrap;
+}
+
+.pay-icon {
+  background: rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 5px;
+  padding: 3px 8px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #5a7a99;
+  letter-spacing: 0.05em;
+  font-family: 'Exo 2', sans-serif;
+}
+
+.footer-bottom {
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.footer-bottom-left {
+  font-size: 12px;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.footer-bottom-right {
+  display: flex;
+  gap: 20px;
+}
+
+.footer-bottom-right a {
+  font-size: 12px;
+  color: #5a7a99;
+  transition: color 0.2s;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+.footer-bottom-right a:hover { color: #00b4ff; }
+
+/* ==============================
+   BACK TO TOP
+   ============================== */
+#back-top {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 800;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: transform 0.2s, opacity 0.3s;
+  box-shadow: 0 4px 20px rgba(0, 114, 255, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  font-size: 20px;
+  border: none;
+}
+
+#back-top.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+#back-top:hover { transform: translateY(-3px); }
+
+/* ==============================
+   TOAST
+   ============================== */
+.live-toast {
+  position: fixed;
+  bottom: 80px;
+  left: 20px;
+  z-index: 800;
+  background: rgba(8, 16, 32, 0.95);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 12px;
+  padding: 12px 16px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+  transition: transform 0.4s, opacity 0.4s;
+  transform: translateX(-120%);
+  opacity: 0;
+  max-width: 280px;
+}
+
+.live-toast.show {
+  transform: translateX(0);
+  opacity: 1;
+}
+
+.toast-dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: #00ff88;
+  flex-shrink: 0;
+  animation: toastPulse 1.5s infinite;
+}
+
+@keyframes toastPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(0, 255, 136, 0.4); }
+  50%       { box-shadow: 0 0 0 5px rgba(0, 255, 136, 0); }
+}
+
+.toast-title {
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 2px;
+  font-family: 'Lexend Deca', sans-serif;
+}
+.toast-sub {
+  font-size: 11px;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+}
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+@media (max-width: 1024px) {
+  .cats-grid { grid-template-columns: repeat(4, 1fr); }
+  .product-grid, .tab-panel.active { grid-template-columns: repeat(3, 1fr); }
+  .footer-grid { grid-template-columns: 1fr 1fr 1fr; }
+  .features-grid { grid-template-columns: repeat(2, 1fr); }
+  .reviews-grid { grid-template-columns: repeat(2, 1fr); }
+}
+
+@media (max-width: 768px) {
+  .hero-inner { grid-template-columns: 1fr; }
+  .hero-visual { display: none; }
+  .hero-title { font-size: 40px; }
+  .cats-grid { grid-template-columns: repeat(3, 1fr); }
+  .product-grid, .tab-panel.active { grid-template-columns: repeat(2, 1fr); }
+  .promo-grid { grid-template-columns: 1fr; }
+  .footer-grid { grid-template-columns: 1fr 1fr; }
+  .reviews-grid { grid-template-columns: 1fr; }
+  .header-top { padding: 12px 16px; }
+  .search-wrap { max-width: 200px; }
+  .banner-visual { right: 20px; font-size: 70px; }
+  .section-title { font-size: 28px; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ==============================
+     HEADER
+     ============================== -->
+<header id="header">
+  <div class="header-top">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
+      CUBE<span class="logo-text-blue">VERSE</span>
+    </a>
+
+    <div class="search-wrap">
+      <input type="text" placeholder="Tìm kiếm rubik, phụ kiện...">
+      <button class="search-btn">Tìm</button>
+    </div>
+
+    <div class="header-actions">
+      <a href="#" class="auth-btn">👤 Đăng nhập / Đăng ký</a>
+      <button class="cart-btn" onclick="alert('Giỏ hàng của bạn')">
+        🛍️
+        <span class="cart-badge" id="cart-count">3</span>
+      </button>
+    </div>
+  </div>
+
+  <nav id="navbar">
+    <div class="nav-inner">
+      <div class="nav-item">
+        <span class="nav-link">Cubes</span>
+        <div class="nav-dropdown">
+          <a href="#"><span class="dd-icon">2️⃣</span>2×2</a>
+          <a href="#"><span class="dd-icon">🟩</span>3×3</a>
+          <a href="#"><span class="dd-icon">4️⃣</span>4×4</a>
+          <a href="#"><span class="dd-icon">5️⃣</span>5×5</a>
+          <a href="#"><span class="dd-icon">🔷</span>6×6 / 7×7</a>
+          <a href="#"><span class="dd-icon">🔺</span>Pyraminx</a>
+          <a href="#"><span class="dd-icon">⬛</span>Skewb</a>
+          <a href="#"><span class="dd-icon">🌀</span>Megaminx</a>
+          <a href="#"><span class="dd-icon">⭐</span>Square-1</a>
+          <a href="#"><span class="dd-icon">✨</span>Collector's Edition</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <span class="nav-link">Lubes</span>
+        <div class="nav-dropdown">
+          <a href="#"><span class="dd-icon">💧</span>Speed Lube</a>
+          <a href="#"><span class="dd-icon">🛢️</span>Heavy Lube</a>
+          <a href="#"><span class="dd-icon">🌿</span>Magnetic Lube</a>
+          <a href="#"><span class="dd-icon">🧴</span>Silicone Lube</a>
+          <a href="#"><span class="dd-icon">📦</span>Lube Kits</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <span class="nav-link">Accessories</span>
+        <div class="nav-dropdown">
+          <a href="#"><span class="dd-icon">⏱️</span>Timers</a>
+          <a href="#"><span class="dd-icon">🔧</span>Tools</a>
+          <a href="#"><span class="dd-icon">🎒</span>Bags &amp; Cases</a>
+          <a href="#"><span class="dd-icon">📋</span>Mats</a>
+          <a href="#"><span class="dd-icon">🏷️</span>Sticker Sets</a>
+          <a href="#"><span class="dd-icon">🎁</span>Gift Sets</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <span class="nav-link">Best Sellers</span>
+        <div class="nav-dropdown">
+          <a href="#"><span class="dd-icon">🏆</span>Top 10 Tuần</a>
+          <a href="#"><span class="dd-icon">🔥</span>Hot This Month</a>
+          <a href="#"><span class="dd-icon">⭐</span>Staff Picks</a>
+          <a href="#"><span class="dd-icon">💎</span>Premium Picks</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <span class="nav-link">Brands</span>
+        <div class="nav-dropdown">
+          <a href="#"><span class="dd-icon">🟦</span>GAN</a>
+          <a href="#"><span class="dd-icon">🟥</span>MoYu</a>
+          <a href="#"><span class="dd-icon">🟨</span>QiYi</a>
+          <a href="#"><span class="dd-icon">🟩</span>YJ</a>
+          <a href="#"><span class="dd-icon">⬛</span>DaYan</a>
+          <a href="#"><span class="dd-icon">🔵</span>X-Man Design</a>
+          <a href="#"><span class="dd-icon">🔴</span>Cubicle Labs</a>
+          <a href="#"><span class="dd-icon">📦</span>Xem Tất Cả</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <span class="nav-link" style="color:#ff3d6e">🔥 Sale</span>
+        <div class="nav-dropdown">
+          <a href="#"><span class="dd-icon">🏷️</span>Giảm đến 50%</a>
+          <a href="#"><span class="dd-icon">🎯</span>Flash Sale</a>
+          <a href="#"><span class="dd-icon">📦</span>Combo Deals</a>
+          <a href="#"><span class="dd-icon">🎁</span>Clearance</a>
+        </div>
+      </div>
+      <div class="nav-item">
+        <span class="nav-link">Blog</span>
+        <div class="nav-dropdown">
+          <a href="#"><span class="dd-icon">📖</span>Hướng Dẫn</a>
+          <a href="#"><span class="dd-icon">📰</span>Tin Tức</a>
+          <a href="#"><span class="dd-icon">🎬</span>Video Tutorials</a>
+          <a href="#"><span class="dd-icon">🏅</span>Giải Đấu</a>
+        </div>
+      </div>
+      <div class="nav-promo">
+        <span>🚀 Free ship đơn từ 300K</span>
+        <span>❤️ Đổi trả 30 ngày</span>
+      </div>
+    </div>
+  </nav>
+</header>
+
+
+<!-- ==============================
+     HERO
+     ============================== -->
+<section id="hero">
+  <div class="hero-grid"></div>
+  <div class="hero-orb-1"></div>
+  <div class="hero-orb-2"></div>
+
+  <div class="hero-inner">
+    <div>
+      <div class="hero-badge">
+        <span class="hero-badge-dot">✦</span>
+        #1 Rubik Store tại Việt Nam
+      </div>
+      <h1 class="hero-title">
+        <span class="line1">MASTER YOUR</span>
+        <span class="line2">CUBEVERSE</span>
+      </h1>
+      <p class="hero-sub">
+        Khám phá hơn 500+ sản phẩm rubik cao cấp từ các thương hiệu hàng đầu thế giới. Dành cho người mới bắt đầu đến speedcuber chuyên nghiệp.
+      </p>
+      <div class="hero-cta">
+        <a href="#" class="btn btn-primary">🛒 Mua Ngay</a>
+        <a href="#" class="btn btn-outline">Xem Bộ Sưu Tập</a>
+      </div>
+      <div class="hero-stats">
+        <div><div class="stat-num">500+</div><div class="stat-label">Sản phẩm</div></div>
+        <div><div class="stat-num">15K+</div><div class="stat-label">Khách hàng</div></div>
+        <div><div class="stat-num">4.9★</div><div class="stat-label">Đánh giá TB</div></div>
+        <div><div class="stat-num">50+</div><div class="stat-label">Thương hiệu</div></div>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="hero-cube-stage">
+        <div class="cube-glow-ring"></div>
+        <div class="cube-3d">
+          <div class="cube-face face-front">
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+          </div>
+          <div class="cube-face face-back">
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+          </div>
+          <div class="cube-face face-right">
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+          </div>
+          <div class="cube-face face-left">
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+          </div>
+          <div class="cube-face face-top">
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+          </div>
+          <div class="cube-face face-bottom">
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+            <div class="sticker"></div><div class="sticker"></div><div class="sticker"></div>
+          </div>
+        </div>
+        <div class="hero-float-card float-card-1">
+          <div class="fcard-with-icon">
+            <span class="fcard-emoji">🚀</span>
+            <div>
+              <div class="fcard-label">Mới nhất</div>
+              <div class="fcard-val">GAN 14 Maglev</div>
+            </div>
+          </div>
+        </div>
+        <div class="hero-float-card float-card-2">
+          <div class="fcard-label">Flash Sale hôm nay</div>
+          <div class="fcard-val" style="color:#ff3d6e">Giảm đến 40% 🔥</div>
+        </div>
+        <div class="hero-float-card float-card-3">
+          <div class="fcard-label">⏱ PB World Record</div>
+          <div class="fcard-val">3.13s</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TICKER -->
+<div id="ticker">
+  <div class="ticker-track">
+    <span class="ticker-item">FREE SHIP đơn từ 300K</span>
+    <span class="ticker-item">GAN 14 Maglev UV – Vừa Ra Mắt</span>
+    <span class="ticker-item">Flash Sale mỗi ngày 12H – 14H</span>
+    <span class="ticker-item">Đổi trả 30 ngày không cần lý do</span>
+    <span class="ticker-item">Hàng chính hãng 100%</span>
+    <span class="ticker-item">Giao hàng toàn quốc trong 2–3 ngày</span>
+    <span class="ticker-item">Mã CUBE10 giảm 10% đơn đầu</span>
+    <span class="ticker-item">WCA Event Cubes – Chuẩn thi đấu</span>
+    <span class="ticker-item">FREE SHIP đơn từ 300K</span>
+    <span class="ticker-item">GAN 14 Maglev UV – Vừa Ra Mắt</span>
+    <span class="ticker-item">Flash Sale mỗi ngày 12H – 14H</span>
+    <span class="ticker-item">Đổi trả 30 ngày không cần lý do</span>
+    <span class="ticker-item">Hàng chính hãng 100%</span>
+    <span class="ticker-item">Giao hàng toàn quốc trong 2–3 ngày</span>
+    <span class="ticker-item">Mã CUBE10 giảm 10% đơn đầu</span>
+    <span class="ticker-item">WCA Event Cubes – Chuẩn thi đấu</span>
+  </div>
+</div>
+
+
+<!-- BANNER SLIDER -->
+<section id="banner">
+  <div class="container">
+    <div style="position: relative;">
+      <div class="banner-wrapper">
+        <div class="banner-track" id="banner-track">
+          <div class="banner-slide slide-theme-1">
+            <div class="banner-bg"></div>
+            <div class="banner-overlay"></div>
+            <div class="banner-visual">🟩</div>
+            <div class="banner-content">
+              <div class="banner-kicker">MỚI RA MẮT 2025</div>
+              <h2 class="banner-h2">GAN 14 Maglev UV<br>Đỉnh Cao Tốc Độ</h2>
+              <p class="banner-p">Công nghệ Maglev thế hệ mới, điều chỉnh lực từ 5 mức – cảm giác hoàn toàn khác biệt.</p>
+              <a href="#" class="btn btn-primary">Xem Ngay → 1.290.000₫</a>
+            </div>
+          </div>
+          <div class="banner-slide slide-theme-2">
+            <div class="banner-bg"></div>
+            <div class="banner-overlay"></div>
+            <div class="banner-visual">🔺</div>
+            <div class="banner-content">
+              <div class="banner-kicker" style="color:#ff3d6e">🔥 FLASH SALE</div>
+              <h2 class="banner-h2">Sale Cực Shock<br>Đến 50% Off</h2>
+              <p class="banner-p">Hàng trăm sản phẩm giảm giá sốc. Số lượng có hạn – nhanh tay kẻo hết!</p>
+              <a href="#" class="btn btn-primary" style="background:#ff3d6e; box-shadow: 0 4px 20px rgba(255,61,110,.4)">Săn Ngay 🔥</a>
+            </div>
+          </div>
+          <div class="banner-slide slide-theme-3">
+            <div class="banner-bg"></div>
+            <div class="banner-overlay"></div>
+            <div class="banner-visual">⏱️</div>
+            <div class="banner-content">
+              <div class="banner-kicker" style="color:#00ffe0">SPEEDCUBING GEAR</div>
+              <h2 class="banner-h2">Bộ Kit<br>Speedcuber Pro</h2>
+              <p class="banner-p">Cube + Timer + Lube – Combo hoàn hảo cho tập luyện chuyên nghiệp.</p>
+              <a href="#" class="btn btn-primary" style="background:linear-gradient(135deg,#00805a,#00ffe0); color:#050d1a; box-shadow: 0 4px 20px rgba(0,255,200,.3)">Combo từ 850K</a>
+            </div>
+          </div>
+          <div class="banner-slide slide-theme-4">
+            <div class="banner-bg"></div>
+            <div class="banner-overlay"></div>
+            <div class="banner-visual">🎁</div>
+            <div class="banner-content">
+              <div class="banner-kicker" style="color:#ffcb2f">GIFT IDEAS</div>
+              <h2 class="banner-h2">Quà Tặng Độc Đáo<br>Cho Người Thân</h2>
+              <p class="banner-p">Bộ quà tặng cao cấp, đóng gói đẹp – món quà ý nghĩa cho mọi dịp.</p>
+              <a href="#" class="btn btn-primary" style="background:linear-gradient(135deg,#a07000,#ffcb2f); color:#050d1a; box-shadow: 0 4px 20px rgba(255,203,47,.4)">Chọn Quà Ngay</a>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="banner-arrow banner-prev" id="banner-prev">◀</button>
+      <button class="banner-arrow banner-next" id="banner-next">▶</button>
+    </div>
+    <div class="banner-dots" id="banner-dots">
+      <button class="banner-dot active"></button>
+      <button class="banner-dot"></button>
+      <button class="banner-dot"></button>
+      <button class="banner-dot"></button>
+    </div>
+  </div>
+</section>
+
+
+<!-- FEATURES -->
+<div id="features">
+  <div class="container">
+    <div class="features-grid">
+      <div class="feature-item">
+        <div class="feature-icon">🚀</div>
+        <div>
+          <div class="feature-title">Giao hàng nhanh</div>
+          <div class="feature-desc">2–3 ngày toàn quốc. Same-day tại Hà Nội &amp; HCM.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🏆</div>
+        <div>
+          <div class="feature-title">Hàng chính hãng 100%</div>
+          <div class="feature-desc">Nhập khẩu trực tiếp, tem chính hãng, bảo hành đầy đủ.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">🔄</div>
+        <div>
+          <div class="feature-title">Đổi trả 30 ngày</div>
+          <div class="feature-desc">Không hài lòng? Đổi hoặc hoàn tiền trong 30 ngày.</div>
+        </div>
+      </div>
+      <div class="feature-item">
+        <div class="feature-icon">💬</div>
+        <div>
+          <div class="feature-title">Hỗ trợ 24/7</div>
+          <div class="feature-desc">Đội ngũ cuber chuyên nghiệp sẵn sàng tư vấn cho bạn.</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- DANH MỤC -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Danh Mục</div>
+        <h2 class="section-title">Shop By Category</h2>
+        <div class="glow-line"></div>
+      </div>
+      <a href="#" class="view-all-link">Xem tất cả →</a>
+    </div>
+    <div class="cats-grid">
+      <div class="cat-card cat-featured" style="background: linear-gradient(135deg, rgba(0,114,255,0.15), #0a1628);">
+        <span class="cat-icon">🟩</span>
+        <div class="cat-info">
+          <div class="cat-name">3×3 Cubes</div>
+          <div class="cat-count">218 sản phẩm</div>
+          <a href="#" class="btn btn-primary" style="margin-top:10px; font-size:12px; padding:7px 16px;">Khám phá →</a>
+        </div>
+      </div>
+      <div class="cat-card"><span class="cat-icon">2️⃣</span><div class="cat-name">2×2</div><div class="cat-count">64 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">4️⃣</span><div class="cat-name">4×4</div><div class="cat-count">55 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">5️⃣</span><div class="cat-name">5×5</div><div class="cat-count">38 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">🔺</span><div class="cat-name">Pyraminx</div><div class="cat-count">29 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">🌀</span><div class="cat-name">Megaminx</div><div class="cat-count">22 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">⬛</span><div class="cat-name">Skewb</div><div class="cat-count">18 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">💧</span><div class="cat-name">Lubes</div><div class="cat-count">45 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">⏱️</span><div class="cat-name">Timers</div><div class="cat-count">12 sp</div></div>
+      <div class="cat-card"><span class="cat-icon">🎁</span><div class="cat-name">Gift Sets</div><div class="cat-count">20 sp</div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==============================
+     BEST SELLERS
+     Để chèn ảnh thật: tìm thẻ <img class="product-img"> trong mỗi sản phẩm
+     và thay src="..." bằng URL ảnh thực của bạn.
+     ============================== -->
+<section class="section" style="background: #080f1e; padding: 80px 0;">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Bán Chạy Nhất</div>
+        <h2 class="section-title">Best Sellers 🏆</h2>
+        <div class="glow-line"></div>
+      </div>
+      <a href="#" class="view-all-link">Xem tất cả →</a>
+    </div>
+
+    <div class="product-grid">
+
+      <!-- Sản phẩm 1: GAN 14 Maglev UV -->
+      <div class="product-card">
+        <div class="product-thumb">
+          <!-- Thay src bên dưới bằng URL ảnh thật của sản phẩm -->
+          <img class="product-img" src="https://placehold.co/400x400/0d1c35/00b4ff?text=GAN+14" alt="GAN 14 Maglev UV 3×3">
+          <div class="product-badge-wrap">
+            <span class="tag tag-red">-20%</span>
+            <span class="tag tag-blue">Best Seller</span>
+          </div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions">
+            <a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
+            <a href="#" class="btn btn-outline">Xem</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">GAN</div>
+          <div class="product-name">GAN 14 Maglev UV 3×3</div>
+          <div class="product-meta">
+            <div><span class="product-price">1.290.000₫</span><span class="product-price-old">1.615.000₫</span></div>
+            <div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(248)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 2: MoYu RS3M -->
+      <div class="product-card">
+        <div class="product-thumb" style="background: linear-gradient(135deg, rgba(255,61,110,0.08), #0d1c35);">
+          <img class="product-img" src="https://placehold.co/400x400/1a0a12/ff3d6e?text=MoYu+RS3M" alt="MoYu RS3M 2021 Maglev">
+          <div class="product-badge-wrap"><span class="tag tag-gold">New</span></div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions">
+            <a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
+            <a href="#" class="btn btn-outline">Xem</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">MoYu</div>
+          <div class="product-name">MoYu RS3M 2021 Maglev 3×3</div>
+          <div class="product-meta">
+            <div><span class="product-price">290.000₫</span></div>
+            <div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(512)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 3: QiYi Tornado -->
+      <div class="product-card">
+        <div class="product-thumb" style="background: linear-gradient(135deg, rgba(255,203,47,0.08), #0d1c35);">
+          <img class="product-img" src="https://placehold.co/400x400/1a1200/ffcb2f?text=QiYi+Tornado" alt="QiYi Tornado v3 Elite">
+          <div class="product-badge-wrap"><span class="tag tag-red">Hot</span></div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions">
+            <a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
+            <a href="#" class="btn btn-outline">Xem</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">QiYi</div>
+          <div class="product-name">QiYi Tornado v3 Elite 3×3</div>
+          <div class="product-meta">
+            <div><span class="product-price">680.000₫</span></div>
+            <div class="product-stars"><span class="star">★★★★☆</span><span class="star-count">(187)</span></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Sản phẩm 4: GAN Pyraminx -->
+      <div class="product-card">
+        <div class="product-thumb" style="background: linear-gradient(135deg, rgba(0,255,200,0.06), #0d1c35);">
+          <img class="product-img" src="https://placehold.co/400x400/001a15/00ffe0?text=GAN+Pyraminx" alt="GAN Pyraminx Enhanced">
+          <div class="product-badge-wrap"><span class="tag tag-blue">WCA</span></div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions">
+            <a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
+            <a href="#" class="btn btn-outline">Xem</a>
+          </div>
+        </div>
+        <div class="product-info">
+          <div class="product-brand">GAN</div>
+          <div class="product-name">GAN Pyraminx Enhanced</div>
+          <div class="product-meta">
+            <div><span class="product-price">450.000₫</span></div>
+            <div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(98)</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+
+<!-- PROMO BLOCKS -->
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="promo-grid">
+      <div class="promo-block promo-block-1">
+        <div class="promo-bg"></div>
+        <div class="promo-content">
+          <div class="promo-kicker" style="color:#00b4ff">SPEEDCUBING</div>
+          <div class="promo-h">Dành Cho Người Thi Đấu</div>
+          <div class="promo-p">Cubes được WCA phê duyệt, lube chuyên biệt và timer chính xác tuyệt đối.</div>
+          <a href="#" class="btn btn-outline">Xem bộ sưu tập →</a>
+        </div>
+      </div>
+      <div class="promo-block promo-block-2">
+        <div class="promo-bg"></div>
+        <div class="promo-content">
+          <div class="promo-kicker" style="color:#ff3d6e">STARTER KIT</div>
+          <div class="promo-h">Mới Bắt Đầu?</div>
+          <div class="promo-p">Bộ kit dành cho người mới: cube cơ bản + sách hướng dẫn + video tutorial miễn phí.</div>
+          <a href="#" class="btn btn-primary" style="background:#ff3d6e; box-shadow: 0 4px 20px rgba(255,61,110,.4)">Bắt đầu ngay →</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- TABS: POPULAR / TRENDING / ON SALE / WCA -->
+<section class="section" style="padding-top: 0;">
+  <div class="container">
+    <div class="section-header" style="margin-bottom: 24px;">
+      <div>
+        <div class="section-label">Khám Phá</div>
+        <h2 class="section-title">Popular &amp; Trending</h2>
+        <div class="glow-line"></div>
+      </div>
+    </div>
+
+    <div class="tabs">
+      <button class="tab-btn active" onclick="switchTab(this, 'popular')">🔥 Phổ Biến</button>
+      <button class="tab-btn" onclick="switchTab(this, 'trending')">📈 Xu Hướng</button>
+      <button class="tab-btn" onclick="switchTab(this, 'sale')">🏷️ Đang Giảm</button>
+      <button class="tab-btn" onclick="switchTab(this, 'wca')">🏆 WCA Event</button>
+    </div>
+
+    <!-- Tab: Phổ biến -->
+    <div class="tab-panel active" id="tab-popular">
+      <div class="product-card">
+        <div class="product-thumb" style="background: linear-gradient(135deg,rgba(0,114,255,.1),#0d1c35)">
+          <img class="product-img" src="https://placehold.co/400x400/0a1628/0072ff?text=GAN+12" alt="GAN 12 Maglev">
+          <div class="product-badge-wrap"><span class="tag tag-blue">#1 Popular</span></div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div>
+        </div>
+        <div class="product-info"><div class="product-brand">GAN</div><div class="product-name">GAN 12 Maglev 3×3</div><div class="product-meta"><div><span class="product-price">890.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(334)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb" style="background: linear-gradient(135deg,rgba(255,150,0,.08),#0d1c35)">
+          <img class="product-img" src="https://placehold.co/400x400/1a0f00/ff9600?text=MoYu+4x4" alt="MoYu WRM 4×4">
+          <div class="product-badge-wrap"><span class="tag tag-gold">Trending</span></div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div>
+        </div>
+        <div class="product-info"><div class="product-brand">MoYu</div><div class="product-name">MoYu WRM 2021 4×4</div><div class="product-meta"><div><span class="product-price">520.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(201)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb" style="background: linear-gradient(135deg,rgba(0,200,100,.08),#0d1c35)">
+          <img class="product-img" src="https://placehold.co/400x400/001a0d/00c864?text=DNM-37" alt="DNM-37 Lube">
+          <div class="product-badge-wrap"><span class="tag tag-blue">Must Have</span></div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div>
+        </div>
+        <div class="product-info"><div class="product-brand">Cubicle Labs</div><div class="product-name">DNM-37 Lube 10ml</div><div class="product-meta"><div><span class="product-price">120.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(445)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb" style="background: linear-gradient(135deg,rgba(100,0,255,.08),#0d1c35)">
+          <img class="product-img" src="https://placehold.co/400x400/0d0020/8800ff?text=Timer+Gen5" alt="StackMat Gen 5 Timer">
+          <div class="product-badge-wrap"><span class="tag tag-blue">Pro</span></div>
+          <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
+          <div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div>
+        </div>
+        <div class="product-info"><div class="product-brand">YuXin</div><div class="product-name">StackMat Gen 5 Timer</div><div class="product-meta"><div><span class="product-price">380.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span><span class="star-count">(122)</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- Tab: Xu hướng -->
+    <div class="tab-panel" id="tab-trending">
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/0d0a1a/8855ff?text=X-Man+Galaxy" alt="X-Man Galaxy V2"><div class="product-badge-wrap"><span class="tag tag-red">📈 Hot</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">X-Man</div><div class="product-name">X-Man Galaxy V2 M 3×3</div><div class="product-meta"><div><span class="product-price">620.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(76)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/120a00/c86400?text=DaYan+TengYun" alt="DaYan TengYun M"><div class="product-badge-wrap"><span class="tag tag-gold">Mới</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">DaYan</div><div class="product-name">DaYan TengYun M 3×3</div><div class="product-meta"><div><span class="product-price">540.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span><span class="star-count">(88)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/1a0800/ff6600?text=QiYi+6x6" alt="QiYi WuHua V2 6×6"><div class="product-badge-wrap"><span class="tag tag-blue">Trending</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">QiYi</div><div class="product-name">QiYi WuHua V2 6×6</div><div class="product-meta"><div><span class="product-price">750.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(45)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/0d1c35/silver?text=GAN+Mirror" alt="GAN Mirror Cube Silver"><div class="product-badge-wrap"><span class="tag tag-red">Viral</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">GAN</div><div class="product-name">GAN Mirror Cube Silver</div><div class="product-meta"><div><span class="product-price">350.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(203)</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- Tab: Đang giảm -->
+    <div class="tab-panel" id="tab-sale">
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/1a0505/ff2222?text=AoLong+V2" alt="MoYu AoLong V2"><div class="product-badge-wrap"><span class="tag tag-red">-35%</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">MoYu</div><div class="product-name">MoYu AoLong V2 3×3</div><div class="product-meta"><div><span class="product-price">195.000₫</span><span class="product-price-old">300.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span><span class="star-count">(310)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/0d1420/aabbcc?text=YuLong+V2" alt="YJ YuLong V2 M"><div class="product-badge-wrap"><span class="tag tag-red">-50%</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">YJ</div><div class="product-name">YJ YuLong V2 M 3×3</div><div class="product-meta"><div><span class="product-price">90.000₫</span><span class="product-price-old">180.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span><span class="star-count">(558)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/001a0d/00c864?text=Cosmic+Bundle" alt="Cosmic DNM-37 Bundle"><div class="product-badge-wrap"><span class="tag tag-red">-25%</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">Cubicle Labs</div><div class="product-name">Cosmic DNM-37 Bundle</div><div class="product-meta"><div><span class="product-price">270.000₫</span><span class="product-price-old">360.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(89)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/1a1000/886600?text=Cubing+Bag" alt="Cubing Backpack Pro"><div class="product-badge-wrap"><span class="tag tag-red">-30%</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">SpeedStacks</div><div class="product-name">Cubing Backpack Pro</div><div class="product-meta"><div><span class="product-price">490.000₫</span><span class="product-price-old">700.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span><span class="star-count">(44)</span></div></div></div>
+      </div>
+    </div>
+
+    <!-- Tab: WCA Event -->
+    <div class="tab-panel" id="tab-wca">
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/0d1c35/00b4ff?text=GAN+14+WCA" alt="GAN 14 Maglev WCA"><div class="product-badge-wrap"><span class="tag tag-blue">WCA Official</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">GAN</div><div class="product-name">GAN 14 Maglev – 3×3 WCA</div><div class="product-meta"><div><span class="product-price">1.290.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(248)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/001a15/00ffe0?text=QiYi+Pyraminx" alt="QiYi MS Pyraminx"><div class="product-badge-wrap"><span class="tag tag-blue">WCA Pyraminx</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">QiYi</div><div class="product-name">QiYi MS Pyraminx</div><div class="product-meta"><div><span class="product-price">290.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(167)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/0d1c35/ffcb2f?text=MoYu+Mega" alt="MoYu AoHun WRM Megaminx"><div class="product-badge-wrap"><span class="tag tag-blue">WCA Mega</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">MoYu</div><div class="product-name">MoYu AoHun WRM Megaminx</div><div class="product-meta"><div><span class="product-price">480.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span><span class="star-count">(94)</span></div></div></div>
+      </div>
+      <div class="product-card">
+        <div class="product-thumb"><img class="product-img" src="https://placehold.co/400x400/0d1c35/ff7043?text=Volt+Sq1" alt="X-Man Volt Square-1 M"><div class="product-badge-wrap"><span class="tag tag-blue">WCA Square-1</span></div><button class="wishlist-btn" onclick="toggleWish(this)">♡</button><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a><a href="#" class="btn btn-outline">Xem</a></div></div>
+        <div class="product-info"><div class="product-brand">X-Man</div><div class="product-name">X-Man Volt Square-1 M</div><div class="product-meta"><div><span class="product-price">420.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span><span class="star-count">(55)</span></div></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- BRAND STRIP -->
+<div id="brands">
+  <div class="container">
+    <div class="section-label" style="text-align: center; margin-bottom: 20px;">Thương Hiệu Hàng Đầu</div>
+  </div>
+  <div class="brands-wrap">
+    <div class="brands-track">
+      <span class="brand-item">GAN</span><span class="brand-sep">·</span>
+      <span class="brand-item">MOYU</span><span class="brand-sep">·</span>
+      <span class="brand-item">QIYI</span><span class="brand-sep">·</span>
+      <span class="brand-item">DAYAN</span><span class="brand-sep">·</span>
+      <span class="brand-item">X-MAN DESIGN</span><span class="brand-sep">·</span>
+      <span class="brand-item">YJ</span><span class="brand-sep">·</span>
+      <span class="brand-item">CUBICLE LABS</span><span class="brand-sep">·</span>
+      <span class="brand-item">SPEEDSTACKS</span><span class="brand-sep">·</span>
+      <span class="brand-item">YUXIN</span><span class="brand-sep">·</span>
+      <span class="brand-item">SHENGSHOU</span><span class="brand-sep">·</span>
+      <span class="brand-item">GAN</span><span class="brand-sep">·</span>
+      <span class="brand-item">MOYU</span><span class="brand-sep">·</span>
+      <span class="brand-item">QIYI</span><span class="brand-sep">·</span>
+      <span class="brand-item">DAYAN</span><span class="brand-sep">·</span>
+      <span class="brand-item">X-MAN DESIGN</span><span class="brand-sep">·</span>
+      <span class="brand-item">YJ</span><span class="brand-sep">·</span>
+      <span class="brand-item">CUBICLE LABS</span><span class="brand-sep">·</span>
+      <span class="brand-item">SPEEDSTACKS</span><span class="brand-sep">·</span>
+      <span class="brand-item">YUXIN</span><span class="brand-sep">·</span>
+      <span class="brand-item">SHENGSHOU</span><span class="brand-sep">·</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- NEW ARRIVALS -->
+<section class="section" style="padding-bottom: 40px;">
+  <div style="max-width:1280px; margin-left:auto; margin-right:auto; padding-left:24px; padding-right:24px;">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Mới Nhất</div>
+        <h2 class="section-title">New Arrivals ✨</h2>
+        <div class="glow-line"></div>
+      </div>
+      <a href="#" class="view-all-link">Xem tất cả →</a>
+    </div>
+  </div>
+  <div class="h-scroll-wrap">
+    <div class="h-scroll-track">
+      <div class="product-card"><div class="product-thumb"><img class="product-img" src="https://placehold.co/300x300/0d1c35/00b4ff?text=GAN+14" alt="GAN 14 Maglev UV"><div class="product-badge-wrap"><span class="tag tag-gold">New</span></div><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒</a><a href="#" class="btn btn-outline">Xem</a></div></div><div class="product-info"><div class="product-brand">GAN</div><div class="product-name">GAN 14 Maglev UV</div><div class="product-meta"><div><span class="product-price">1.290.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span></div></div></div></div>
+
+      <div class="product-card"><div class="product-thumb"><img class="product-img" src="https://placehold.co/300x300/0d1c35/ff3d6e?text=MoYu+RS2M" alt="MoYu RS2M Maglev"><div class="product-badge-wrap"><span class="tag tag-gold">New</span></div><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒</a><a href="#" class="btn btn-outline">Xem</a></div></div><div class="product-info"><div class="product-brand">MoYu</div><div class="product-name">MoYu RS2M Maglev</div><div class="product-meta"><div><span class="product-price">290.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span></div></div></div></div>
+
+      <div class="product-card"><div class="product-thumb"><img class="product-img" src="https://placehold.co/300x300/0d1c35/ffcb2f?text=QiYi+5x5" alt="QiYi MS 5×5 M"><div class="product-badge-wrap"><span class="tag tag-gold">New</span></div><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒</a><a href="#" class="btn btn-outline">Xem</a></div></div><div class="product-info"><div class="product-brand">QiYi</div><div class="product-name">QiYi MS 5×5 M</div><div class="product-meta"><div><span class="product-price">580.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span></div></div></div></div>
+
+      <div class="product-card"><div class="product-thumb"><img class="product-img" src="https://placehold.co/300x300/0d1c35/00ffe0?text=Wingy+Skewb" alt="X-Man Wingy Skewb M"><div class="product-badge-wrap"><span class="tag tag-gold">New</span></div><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒</a><a href="#" class="btn btn-outline">Xem</a></div></div><div class="product-info"><div class="product-brand">X-Man</div><div class="product-name">X-Man Wingy Skewb M</div><div class="product-meta"><div><span class="product-price">340.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span></div></div></div></div>
+
+      <div class="product-card"><div class="product-thumb"><img class="product-img" src="https://placehold.co/300x300/0d1c35/8855ff?text=DaYan+Mega" alt="DaYan Megaminx M"><div class="product-badge-wrap"><span class="tag tag-gold">New</span></div><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒</a><a href="#" class="btn btn-outline">Xem</a></div></div><div class="product-info"><div class="product-brand">DaYan</div><div class="product-name">DaYan Megaminx M</div><div class="product-meta"><div><span class="product-price">650.000₫</span></div><div class="product-stars"><span class="star">★★★★☆</span></div></div></div></div>
+
+      <div class="product-card"><div class="product-thumb"><img class="product-img" src="https://placehold.co/300x300/0d1c35/00c864?text=Cosmic+2025" alt="Cosmic DNM Bundle 2025"><div class="product-badge-wrap"><span class="tag tag-gold">New</span></div><div class="product-actions"><a href="#" class="btn btn-primary" onclick="addToCart(event)">🛒</a><a href="#" class="btn btn-outline">Xem</a></div></div><div class="product-info"><div class="product-brand">Cubicle</div><div class="product-name">Cosmic DNM Bundle 2025</div><div class="product-meta"><div><span class="product-price">320.000₫</span></div><div class="product-stars"><span class="star">★★★★★</span></div></div></div></div>
+    </div>
+  </div>
+</section>
+
+
+<!-- COUNTDOWN FLASH SALE -->
+<section id="countdown">
+  <div class="countdown-inner">
+    <div class="section-label" style="text-align:center">Flash Sale</div>
+    <div class="countdown-title">⚡ Deal Của Ngày – Kết thúc sau:</div>
+    <div class="countdown-sub">GAN 14 Maglev – Giảm 30% chỉ hôm nay!</div>
+    <div class="countdown-clock">
+      <div class="cd-unit"><div class="cd-num" id="cd-h">08</div><div class="cd-label">GIỜ</div></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><div class="cd-num" id="cd-m">47</div><div class="cd-label">PHÚT</div></div>
+      <span class="cd-sep">:</span>
+      <div class="cd-unit"><div class="cd-num" id="cd-s">23</div><div class="cd-label">GIÂY</div></div>
+    </div>
+    <div style="display:flex; gap:12px; justify-content:center; flex-wrap:wrap;">
+      <a href="#" class="btn btn-primary">🔥 Mua ngay – 903.000₫ <span style="text-decoration:line-through; opacity:0.6; font-weight:400">1.290.000₫</span></a>
+      <a href="#" class="btn btn-outline">Xem tất cả Flash Sale</a>
+    </div>
+  </div>
+</section>
+
+
+<!-- REVIEWS -->
+<section id="reviews">
+  <div class="container">
+    <div class="section-header">
+      <div>
+        <div class="section-label">Khách Hàng Nói Gì</div>
+        <h2 class="section-title">Reviews ⭐</h2>
+        <div class="glow-line"></div>
+      </div>
+      <div style="display:flex; align-items:center; gap:12px;">
+        <span style="font-family:'Exo 2',sans-serif; font-size:40px; font-weight:900; color:#00b4ff;">4.9</span>
+        <div>
+          <div style="color:#ffcb2f; font-size:18px;">★★★★★</div>
+          <div style="font-size:12px; color:#5a7a99; font-family:'Be Vietnam Pro',sans-serif;">Từ 2.400+ đánh giá</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="reviews-grid">
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar">TN</div>
+          <div>
+            <div class="review-name">Trần Nguyên</div>
+            <div class="product-stars"><span class="star">★★★★★</span></div>
+            <div class="review-date">02/04/2025</div>
+          </div>
+        </div>
+        <p class="review-text">"GAN 14 Maglev quá đỉnh! Turning smooth như mơ, lực từ điều chỉnh được rất dễ. Giao hàng nhanh, đóng gói cẩn thận. Chắc chắn sẽ mua lại."</p>
+        <div class="review-product">📦 GAN 14 Maglev UV 3×3</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar" style="background: linear-gradient(135deg, #ff3d6e, #ff7043);">ML</div>
+          <div>
+            <div class="review-name">Minh Linh</div>
+            <div class="product-stars"><span class="star">★★★★★</span></div>
+            <div class="review-date">29/03/2025</div>
+          </div>
+        </div>
+        <p class="review-text">"Shop tư vấn rất nhiệt tình, giúp mình chọn được cube phù hợp với trình độ. MoYu RS3M Maglev là lựa chọn hoàn hảo cho beginner như mình!"</p>
+        <div class="review-product">📦 MoYu RS3M 2021 Maglev</div>
+      </div>
+      <div class="review-card">
+        <div class="review-top">
+          <div class="review-avatar" style="background: linear-gradient(135deg, #00ffe0, #00b4ff);">DH</div>
+          <div>
+            <div class="review-name">Đức Huy</div>
+            <div class="product-stars"><span class="star">★★★★★</span></div>
+            <div class="review-date">25/03/2025</div>
+          </div>
+        </div>
+        <p class="review-text">"Lube DNM-37 là thứ tôi tìm kiếm từ lâu. Cube sau khi lube xong smooth hơn hẳn, cornercut tốt hơn nhiều. Giá cũng rất hợp lý!"</p>
+        <div class="review-product">📦 DNM-37 Lube 10ml</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
+<!-- NEWSLETTER -->
+<section id="newsletter">
+  <div class="container">
+    <div class="newsletter-inner">
+      <div class="newsletter-icon">📬</div>
+      <div class="section-label" style="text-align:center">Newsletter</div>
+      <h2 class="section-title" style="text-align:center">Đừng Bỏ Lỡ Deal Nào!</h2>
+      <p style="color:#5a7a99; font-size:14px; margin-top:10px; text-align:center; font-family:'Be Vietnam Pro',sans-serif;">
+        Đăng ký nhận thông báo về sản phẩm mới, flash sale và tips cubing hàng tuần.
+      </p>
+      <div class="newsletter-form">
+        <input type="email" placeholder="Nhập email của bạn...">
+        <button class="btn btn-primary" style="white-space:nowrap;">Đăng Ký →</button>
+      </div>
+      <p class="newsletter-note">🔒 Chúng tôi không spam. Hủy đăng ký bất kỳ lúc nào.</p>
+    </div>
+  </div>
+</section>
+
+
+<!-- ==============================
+     FOOTER
+     ============================== -->
+<footer id="footer">
+  <div class="container">
+    <div class="footer-grid">
+
+      <div>
+        <a href="#" class="logo" style="font-size:18px; margin-bottom:16px; display:inline-flex;">
+          <div class="logo-icon" style="width:30px; height:30px;">
+            <span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span><span></span>
+          </div>
+          CUBE<span class="logo-text-blue">VERSE</span>
+        </a>
+        <p class="footer-desc">Store rubik hàng đầu Việt Nam – nơi hội tụ của những cuber đam mê. Hàng chính hãng, giá tốt, ship nhanh.</p>
+
+        <!-- Social buttons với SVG logo thật -->
+        <div class="social-row">
+
+          <!-- Facebook -->
+          <a href="#" class="social-btn soc-fb" title="Facebook">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M24 12.073C24 5.405 18.627 0 12 0S0 5.405 0 12.073C0 18.1 4.388 23.094 10.125 24v-8.437H7.078v-3.49h3.047V9.41c0-3.025 1.792-4.697 4.533-4.697 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.93-1.956 1.886v2.286h3.328l-.532 3.49h-2.796V24C19.612 23.094 24 18.1 24 12.073z"/>
+            </svg>
+          </a>
+
+          <!-- Instagram -->
+          <a href="#" class="social-btn soc-ig" title="Instagram">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/>
+            </svg>
+          </a>
+
+          <!-- YouTube -->
+          <a href="#" class="social-btn soc-yt" title="YouTube">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M23.498 6.186a3.016 3.016 0 00-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 00.502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 002.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 002.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/>
+            </svg>
+          </a>
+
+          <!-- X (Twitter) -->
+          <a href="#" class="social-btn soc-x" title="X (Twitter)">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
+            </svg>
+          </a>
+
+          <!-- TikTok -->
+          <a href="#" class="social-btn soc-tt" title="TikTok">
+            <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+              <path d="M12.525.02c1.31-.02 2.61-.01 3.91-.02.08 1.53.63 3.09 1.75 4.17 1.12 1.11 2.7 1.62 4.24 1.79v4.03c-1.44-.05-2.89-.35-4.2-.97-.57-.26-1.1-.59-1.62-.93-.01 2.92.01 5.84-.02 8.75-.08 1.4-.54 2.79-1.35 3.94-1.31 1.92-3.58 3.17-5.91 3.21-1.43.08-2.86-.31-4.08-1.03-2.02-1.19-3.44-3.37-3.65-5.71-.02-.5-.03-1-.01-1.49.18-1.9 1.12-3.72 2.58-4.96 1.66-1.44 3.98-2.13 6.15-1.72.02 1.48-.04 2.96-.04 4.44-.99-.32-2.15-.23-3.02.37-.63.41-1.11 1.04-1.36 1.75-.21.51-.15 1.07-.14 1.61.24 1.64 1.82 3.02 3.5 2.87 1.12-.01 2.19-.66 2.77-1.61.19-.33.4-.67.41-1.06.1-1.79.06-3.57.07-5.36.01-4.03-.01-8.05.02-12.07z"/>
+            </svg>
+          </a>
+
+        </div>
+
+        <div class="payment-icons">
+          <span class="pay-icon">VISA</span>
+          <span class="pay-icon">MC</span>
+          <span class="pay-icon">MOMO</span>
+          <span class="pay-icon">VNPAY</span>
+          <span class="pay-icon">COD</span>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Về CubeVerse</div>
+        <div class="footer-links">
+          <a href="#">Our Story</a>
+          <a href="#">Reviews</a>
+          <a href="#">Showroom</a>
+          <a href="#">Careers</a>
+          <a href="#">Press</a>
+          <a href="#">Blog</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Support</div>
+        <div class="footer-links">
+          <a href="#">FAQ</a>
+          <a href="#">Track Order</a>
+          <a href="#">Contact Us</a>
+          <a href="#">Live Chat</a>
+          <a href="#">Speedcubing Guide</a>
+          <a href="#">Video Tutorials</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Policies</div>
+        <div class="footer-links">
+          <a href="#">Shipping Policy</a>
+          <a href="#">Return Policy</a>
+          <a href="#">Privacy Policy</a>
+          <a href="#">Terms of Service</a>
+          <a href="#">Warranty</a>
+          <a href="#">Cookie Policy</a>
+        </div>
+      </div>
+
+      <div>
+        <div class="footer-col-title">Newsletter</div>
+        <p style="font-size:13px; color:#5a7a99; margin-bottom:12px; font-family:'Be Vietnam Pro',sans-serif;">Nhận thông báo deal &amp; sản phẩm mới:</p>
+        <div class="footer-newsletter-row">
+          <input type="email" placeholder="Email của bạn">
+          <button class="footer-newsletter-btn">→</button>
+        </div>
+        <p style="font-size:11px; color:#5a7a99; margin-top:10px; font-family:'Be Vietnam Pro',sans-serif;">📦 Ship toàn quốc · 🔒 Bảo mật tuyệt đối</p>
+      </div>
+
+    </div>
+
+    <div class="footer-bottom">
+      <div class="footer-bottom-left">© 2025 CubeVerse. All rights reserved. Made with ❤️ for cubers.</div>
+      <div class="footer-bottom-right">
+        <a href="#">Privacy</a>
+        <a href="#">Terms</a>
+        <a href="#">Sitemap</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+
+<button id="back-top" onclick="window.scrollTo({top:0, behavior:'smooth'})">▲</button>
+
+<div class="live-toast" id="live-toast">
+  <div class="toast-dot"></div>
+  <div>
+    <div class="toast-title" id="toast-title">Nguyễn Hùng từ Hà Nội</div>
+    <div class="toast-sub"  id="toast-sub">vừa mua GAN 14 Maglev UV 🎉</div>
+  </div>
+</div>
+
+
+<script>
+/* --- Header khi cuộn --- */
+window.addEventListener('scroll', function() {
+  var header = document.getElementById('header');
+  var backTop = document.getElementById('back-top');
+  if (window.scrollY > 10) header.classList.add('scrolled');
+  else header.classList.remove('scrolled');
+  if (window.scrollY > 400) backTop.classList.add('visible');
+  else backTop.classList.remove('visible');
+});
+
+/* --- Banner Slider --- */
+var currentSlide = 0;
+var totalSlides  = 4;
+var autoSlide;
+
+function goToSlide(n) {
+  currentSlide = (n + totalSlides) % totalSlides;
+  document.getElementById('banner-track').style.transform = 'translateX(-' + (currentSlide * 100) + '%)';
+  var dots = document.querySelectorAll('.banner-dot');
+  for (var i = 0; i < dots.length; i++) dots[i].classList.remove('active');
+  dots[currentSlide].classList.add('active');
+}
+
+document.getElementById('banner-prev').onclick = function() { goToSlide(currentSlide - 1); resetAutoSlide(); };
+document.getElementById('banner-next').onclick = function() { goToSlide(currentSlide + 1); resetAutoSlide(); };
+
+var dots = document.querySelectorAll('.banner-dot');
+for (var i = 0; i < dots.length; i++) {
+  (function(index) {
+    dots[index].addEventListener('click', function() { goToSlide(index); resetAutoSlide(); });
+  })(i);
+}
+
+function resetAutoSlide() {
+  clearInterval(autoSlide);
+  autoSlide = setInterval(function() { goToSlide(currentSlide + 1); }, 4500);
+}
+resetAutoSlide();
+
+/* --- Chuyển Tab --- */
+function switchTab(btn, tabId) {
+  document.querySelectorAll('.tab-btn').forEach(function(b)  { b.classList.remove('active'); });
+  document.querySelectorAll('.tab-panel').forEach(function(p) { p.classList.remove('active'); });
+  btn.classList.add('active');
+  document.getElementById('tab-' + tabId).classList.add('active');
+}
+
+/* --- Countdown --- */
+var deadline = Date.now() + (8 * 3600000) + (47 * 60000) + (23 * 1000);
+function updateCountdown() {
+  var diff = Math.max(0, deadline - Date.now());
+  var h = Math.floor(diff / 3600000);
+  var m = Math.floor((diff % 3600000) / 60000);
+  var s = Math.floor((diff % 60000) / 1000);
+  document.getElementById('cd-h').textContent = (h < 10 ? '0' : '') + h;
+  document.getElementById('cd-m').textContent = (m < 10 ? '0' : '') + m;
+  document.getElementById('cd-s').textContent = (s < 10 ? '0' : '') + s;
+}
+updateCountdown();
+setInterval(updateCountdown, 1000);
+
+/* --- Nút yêu thích --- */
+function toggleWish(btn) {
+  if (btn.dataset.liked === '1') {
+    btn.dataset.liked = '0'; btn.textContent = '♡'; btn.style.color = ''; btn.style.borderColor = '';
+  } else {
+    btn.dataset.liked = '1'; btn.textContent = '♥'; btn.style.color = '#ff3d6e'; btn.style.borderColor = '#ff3d6e';
+  }
+}
+
+/* --- Thêm vào giỏ --- */
+function addToCart(e) {
+  e.preventDefault();
+  var badge = document.getElementById('cart-count');
+  var count = parseInt(badge.textContent) + 1;
+  badge.textContent = count;
+  badge.style.transform = 'scale(1.5)';
+  setTimeout(function() { badge.style.transform = ''; }, 200);
+}
+
+/* --- Toast live --- */
+var toastMessages = [
+  { name: 'Nguyễn Hùng – Hà Nội',  action: 'vừa mua GAN 14 Maglev UV 🎉' },
+  { name: 'Trần Minh – TP.HCM',    action: 'vừa mua MoYu RS3M Maglev 🛒' },
+  { name: 'Lê Anh – Đà Nẵng',      action: 'vừa mua QiYi Tornado v3 ⚡' },
+  { name: 'Phạm Linh – Cần Thơ',   action: 'vừa mua DNM-37 Lube Bundle 💧' },
+  { name: 'Hoàng Nam – Hải Phòng', action: 'vừa mua Combo Starter Kit 🎁' },
+  { name: 'Vũ Thắng – Huế',        action: 'vừa mua StackMat Gen5 Timer ⏱️' },
+];
+var toastIndex = 0;
+
+function showToast() {
+  var toast = document.getElementById('live-toast');
+  var data = toastMessages[toastIndex % toastMessages.length];
+  document.getElementById('toast-title').textContent = data.name;
+  document.getElementById('toast-sub').textContent   = data.action;
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 3500);
+  toastIndex++;
+}
+setTimeout(showToast, 3000);
+setInterval(showToast, 9000);
+</script>
+</body>
+</html>
