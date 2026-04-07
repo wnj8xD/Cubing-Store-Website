@@ -461,9 +461,9 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .product-thumb img {
-  width: 100%;
+  width: 60%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   padding: 20px;
   transition: transform 0.4s ease;
 }
@@ -1442,194 +1442,246 @@ input[type="range"]::-webkit-slider-thumb {
      ============================== -->
 <script>
 
-/* ---- DỮ LIỆU SẢN PHẨM ---- */
+/* ---- DỮ LIỆU SẢN PHẨM (ĐÃ CẬP NHẬT 3X3 MỚI NHẤT 2026) ---- */
 var products = [
   {
-    id: 1, name: 'GAN 14 Maglev UV', brand: 'GAN',
+    id: 1, name: 'GAN 15 Maglev UV', brand: 'GAN',
     price: 1290000, oldPrice: 1615000,
     rating: 4.9, reviews: 248,
     magnetic: 'Maglev', level: 'Pro',
     tags: ['sale', 'wca'], stock: 'ins', stockTxt: 'Còn hàng (12)',
-    img: 'https://placehold.co/500x500/0a1628/00b4ff?text=GAN+14',
+    // GIỮ NGUYÊN LINK ẢNH CỦA BẠN
+    img: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSwv1Z03EyD8mIJCv-2cT87ZAAixYDgvV5BmCwhPraRGd8BpugvYCZCvQVbW-VNqvSFZlPs7lneCO-hy4g_03RvVe4dQqQm87txrEzoCfo8n6EibpR178xu',
     imgs: [
-      'https://placehold.co/500x500/0a1628/00b4ff?text=GAN+14',
-      'https://placehold.co/500x500/071220/00ffe0?text=Side',
-      'https://placehold.co/500x500/0d1c35/ffffff?text=Top'
+      'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSwv1Z03EyD8mIJCv-2cT87ZAAixYDgvV5BmCwhPraRGd8BpugvYCZCvQVbW-VNqvSFZlPs7lneCO-hy4g_03RvVe4dQqQm87txrEzoCfo8n6EibpR178xu',
+      'https://www.speedcubeuk.co.uk/wp-content/uploads/2024/02/Gan-14-maglev-s-02.jpg',
+      'https://kewbz.co.uk/cdn/shop/files/GAN14MagLev3x3.webp?v=1773607256&width=1946'
     ],
     versions: [
       { label: 'UV Edition', price: 1290000 },
       { label: 'Standard',   price: 1090000 },
-      { label: 'Frosted',    price: 1190000 },
-      { label: 'Stickerless',price: 1290000 },
-      { label: 'Black Base', price: 1290000 }
+      { label: 'Frosted',    price: 1190000 }
     ],
     specs: {
-      'Kích thước': '56mm', 'Cơ chế từ': 'Maglev GES+',
-      'Vật liệu': 'ABS Cao cấp', 'Trọng lượng': '70g',
-      'Cornercut': '≥52°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (GAN)'
+      'Kích thước': '56mm', 'Cơ chế từ': 'Maglev + Ball Core 3.0',
+      'Vật liệu': 'ABS Cao cấp', 'Trọng lượng': '65g',
+      'Cornercut': '≥55°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (GAN)'
     },
-    badges: [{ text: '-20%', cls: 'badge-red' }, { text: 'WCA', cls: 'badge-blue' }, { text: 'Flagship', cls: 'badge-gold' }]
+    badges: [{ text: '-20%', cls: 'badge-red' }, { text: 'WCA', cls: 'badge-blue' }, { text: 'Flagship 2026', cls: 'badge-gold' }]
   },
   {
-    id: 2, name: 'MoYu RS3M 2021 Maglev', brand: 'MoYu',
-    price: 290000, oldPrice: null,
+    id: 2, name: 'MoYu RS3M V5 Maglev', brand: 'MoYu',
+    price: 350000, oldPrice: null,
     rating: 4.8, reviews: 512,
     magnetic: 'Maglev', level: 'Intermediate',
     tags: ['new'], stock: 'ins', stockTxt: 'Còn hàng (45)',
-    img: 'https://placehold.co/500x500/1a0a12/ff3d6e?text=RS3M',
+    img: 'https://cuboscubik.com/cdn/shop/files/rs3mag2.webp?v=1744852536&width=1946',
     imgs: [
-      'https://placehold.co/500x500/1a0a12/ff3d6e?text=RS3M',
-      'https://placehold.co/500x500/1a0a12/ffcb2f?text=Side'
+      'https://cuboscubik.com/cdn/shop/files/rs3mag2.webp?v=1744852536&width=1946',
+      'https://www.cubelelo.com/cdn/shop/products/18hUJwiv1V6gMAL84Jpe7w-uvrrYwYLu8_800x.jpg?v=1634107914'
     ],
     versions: [
-      { label: 'Stickerless', price: 290000 },
-      { label: 'Black Base',  price: 290000 },
-      { label: 'Hidetoshi',   price: 320000 }
+      { label: 'Standard', price: 250000 },
+      { label: 'Maglev',  price: 350000 },
+      { label: 'Ball-Core', price: 490000 }
     ],
     specs: {
-      'Kích thước': '56.5mm', 'Cơ chế từ': 'Maglev Standard',
-      'Vật liệu': 'ABS', 'Trọng lượng': '78g',
-      'Cornercut': '≥48°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (MoYu)'
+      'Kích thước': '55.5mm', 'Cơ chế từ': 'Maglev Dual-Adjustment',
+      'Vật liệu': 'ABS', 'Trọng lượng': '65g',
+      'Cornercut': '≥50°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (MoYu)'
     },
     badges: [{ text: 'New', cls: 'badge-gold' }, { text: 'Best Value', cls: 'badge-green' }]
   },
   {
-    id: 3, name: 'QiYi Tornado v3 Elite', brand: 'QiYi',
-    price: 680000, oldPrice: null,
-    rating: 4.6, reviews: 187,
-    magnetic: 'Standard Magnet', level: 'Pro',
+    id: 3, name: 'QiYi Tornado V4 Pioneer', brand: 'QiYi',
+    price: 850000, oldPrice: null,
+    rating: 4.9, reviews: 187,
+    magnetic: 'Maglev', level: 'Pro',
     tags: ['wca'], stock: 'low', stockTxt: 'Còn ít (5)',
-    img: 'https://placehold.co/500x500/1a1200/ffcb2f?text=Tornado+v3',
+    img: 'https://www.speedcube.rs/files/8853/QiYi-Tornado-V3-M-3x3-Standard-Version.jpg',
     imgs: [
-      'https://placehold.co/500x500/1a1200/ffcb2f?text=Tornado+v3',
-      'https://placehold.co/500x500/0d1c35/00b4ff?text=Side'
+      'https://www.speedcube.rs/files/8853/QiYi-Tornado-V3-M-3x3-Standard-Version.jpg',
+      'https://rubikstore.vn/cdn/images/202312/goods_img/rubik-qiyi-xmd-tornado-v3-m-standard-3x3x3-stickerless-P1465-1701660032204.jpg'
     ],
     versions: [
-      { label: 'Elite (Flagship)', price: 680000 },
-      { label: 'Pro',              price: 520000 },
-      { label: 'Standard',         price: 380000 }
+      { label: 'Pioneer (Maglev)', price: 850000 },
+      { label: 'Flagship',         price: 720000 },
+      { label: 'Standard',         price: 550000 }
     ],
     specs: {
-      'Kích thước': '56mm', 'Cơ chế từ': 'Dual Adjustment',
-      'Vật liệu': 'ABS + Carbon', 'Trọng lượng': '74g',
-      'Cornercut': '≥50°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (QiYi)'
+      'Kích thước': '55.5mm', 'Cơ chế từ': 'Omnidirectional Core',
+      'Vật liệu': 'ABS', 'Trọng lượng': '69g',
+      'Cornercut': '≥53°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (QiYi)'
     },
-    badges: [{ text: 'WCA', cls: 'badge-blue' }, { text: 'Hot', cls: 'badge-red' }]
+    badges: [{ text: 'WCA', cls: 'badge-blue' }, { text: 'Ultra Smooth', cls: 'badge-red' }]
   },
   {
-    id: 4, name: 'GAN 12 Maglev', brand: 'GAN',
+    id: 4, name: 'MoYu WeiLong WRM V10', brand: 'MoYu',
     price: 890000, oldPrice: 1050000,
     rating: 4.9, reviews: 334,
     magnetic: 'Maglev', level: 'Pro',
     tags: ['sale', 'wca'], stock: 'ins', stockTxt: 'Còn hàng (18)',
-    img: 'https://placehold.co/500x500/0a1a2e/0072ff?text=GAN+12',
+    img: 'https://m.media-amazon.com/images/I/61GNPtCTbBL._AC_SX679_.jpg',
     imgs: [
-      'https://placehold.co/500x500/0a1a2e/0072ff?text=GAN+12',
-      'https://placehold.co/500x500/071220/00ffe0?text=Side'
+      'https://m.media-amazon.com/images/I/61GNPtCTbBL._AC_SX679_.jpg',
+      'https://img.pacifiko.com/PROD/resize/1/500x500/ZGZhZGZmMG.jpg'
     ],
     versions: [
-      { label: 'Stickerless',    price: 890000 },
-      { label: 'Tiled (Black)',  price: 890000 },
-      { label: 'UV',             price: 990000 }
+      { label: 'Ball-core UV',    price: 890000 },
+      { label: 'Maglev',          price: 650000 },
+      { label: 'Magnetic',        price: 450000 }
     ],
     specs: {
-      'Kích thước': '56mm', 'Cơ chế từ': 'Maglev GES',
-      'Vật liệu': 'ABS', 'Trọng lượng': '69g',
-      'Cornercut': '≥51°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (GAN)'
+      'Kích thước': '55mm', 'Cơ chế từ': 'Ball-core 20-Magnet',
+      'Vật liệu': 'ABS UV Coated', 'Trọng lượng': '71g',
+      'Cornercut': '≥52°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (MoYu)'
     },
-    badges: [{ text: '-15%', cls: 'badge-red' }, { text: 'WCA', cls: 'badge-blue' }]
+    badges: [{ text: '-15%', cls: 'badge-red' }, { text: 'WCA', cls: 'badge-blue' }, { text: 'Speed', cls: 'badge-gold' }]
   },
   {
-    id: 5, name: 'X-Man Galaxy V2 M', brand: 'X-Man',
-    price: 620000, oldPrice: null,
-    rating: 4.7, reviews: 76,
-    magnetic: 'Standard Magnet', level: 'Pro',
+    id: 5, name: 'GuHong V4 Pro', brand: 'DaYan',
+    price: 450000, oldPrice: null,
+    rating: 4.7, reviews: 95,
+    magnetic: 'Standard Magnet', level: 'Intermediate',
     tags: ['new'], stock: 'ins', stockTxt: 'Còn hàng (22)',
-    img: 'https://placehold.co/500x500/0d0a1a/8855ff?text=Galaxy+V2',
+    img: 'https://img.drz.lazcdn.com/static/bd/p/3d33d7e79ff05b256fdd4626b89e1573.jpg_720x720q80.jpg',
     imgs: [
-      'https://placehold.co/500x500/0d0a1a/8855ff?text=Galaxy+V2',
-      'https://placehold.co/500x500/0d0a1a/00b4ff?text=Side'
+      'https://img.drz.lazcdn.com/static/bd/p/3d33d7e79ff05b256fdd4626b89e1573.jpg_720x720q80.jpg',
+      'https://thecubiclepro.shop/wp-content/uploads/2025/09/guhong_20v4_20angstrom.jpg'
     ],
     versions: [
-      { label: 'Stickerless', price: 620000 },
-      { label: 'Black',       price: 620000 }
+      { label: '54mm', price: 450000 },
+      { label: '55mm', price: 450000 },
+      { label: '56mm', price: 450000 }
     ],
     specs: {
-      'Kích thước': '56mm', 'Cơ chế từ': 'Dual Spring',
-      'Vật liệu': 'ABS', 'Trọng lượng': '76g',
-      'Cornercut': '≥48°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (X-Man)'
+      'Kích thước': 'Tùy chọn', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS', 'Trọng lượng': '67g',
+      'Cornercut': '≥48°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (DaYan)'
     },
-    badges: [{ text: 'New', cls: 'badge-gold' }]
+    badges: [{ text: 'Compact', cls: 'badge-gold' }]
   },
   {
-    id: 6, name: 'YJ MGC Elite M', brand: 'DaYan',
-    price: 450000, oldPrice: 590000,
-    rating: 4.5, reviews: 143,
+    id: 6, name: 'YJ MGC Evo V2', brand: 'YJ',
+    price: 390000, oldPrice: 450000,
+    rating: 4.6, reviews: 143,
     magnetic: 'Standard Magnet', level: 'Intermediate',
     tags: ['sale'], stock: 'ins', stockTxt: 'Còn hàng (30)',
-    img: 'https://placehold.co/500x500/001a0d/00c864?text=MGC+Elite',
+    img: 'https://down-ph.img.susercontent.com/file/sg-11134201-7qve1-lkj064up39g2cf',
     imgs: [
-      'https://placehold.co/500x500/001a0d/00c864?text=MGC+Elite',
-      'https://placehold.co/500x500/071220/00b4ff?text=Side'
+      'https://down-ph.img.susercontent.com/file/sg-11134201-7qve1-lkj064up39g2cf',
+      'https://tse1.mm.bing.net/th/id/OIP.4rTm3hP5Bbp4pr1Qk7_8kQHaHa?pid=Api&P=0&h=220'
     ],
     versions: [
-      { label: 'Stickerless',  price: 450000 },
-      { label: 'Black Tiled',  price: 450000 }
+      { label: 'Stickerless',  price: 390000 }
     ],
     specs: {
-      'Kích thước': '57mm', 'Cơ chế từ': 'Ball Core',
-      'Vật liệu': 'ABS', 'Trọng lượng': '80g',
-      'Cornercut': '≥46°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (YJ)'
+      'Kích thước': '56mm', 'Cơ chế từ': 'Adjustable Magnet',
+      'Vật liệu': 'ABS', 'Trọng lượng': '78g',
+      'Cornercut': '≥48°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (YJ)'
     },
-    badges: [{ text: '-24%', cls: 'badge-red' }]
+    badges: [{ text: 'Sale', cls: 'badge-red' }]
   },
   {
-    id: 7, name: 'MoYu Weilong WRM 2021', brand: 'MoYu',
-    price: 490000, oldPrice: null,
-    rating: 4.7, reviews: 289,
-    magnetic: 'Standard Magnet', level: 'Intermediate',
-    tags: ['wca'], stock: 'ins', stockTxt: 'Còn hàng (27)',
-    img: 'https://placehold.co/500x500/0d1c35/ff7043?text=Weilong+WRM',
+    id: 7, name: 'DaYan TengYun V3 M', brand: 'DaYan',
+    price: 590000, oldPrice: null,
+    rating: 4.8, reviews: 120,
+    magnetic: 'Standard Magnet', level: 'Pro',
+    tags: ['wca'], stock: 'ins', stockTxt: 'Còn hàng (15)',
+    img: 'https://www.thecubicle.com/cdn/shop/products/V3M-_-02.jpg?v=1670433801',
     imgs: [
-      'https://placehold.co/500x500/0d1c35/ff7043?text=Weilong+WRM',
-      'https://placehold.co/500x500/1a0800/ffcb2f?text=Side'
+      'https://www.thecubicle.com/cdn/shop/products/V3M-_-02.jpg?v=1670433801',
+      'https://kupsepeti.com/cdn/shop/files/dayan-tengyun-v3-m-kup-sepeti-4.jpg?v=1704900775&width=1445'
     ],
     versions: [
-      { label: 'Stickerless', price: 490000 },
-      { label: 'Black',       price: 490000 },
-      { label: '2021 V2',     price: 560000 }
+      { label: 'Stickerless', price: 590000 }
     ],
     specs: {
-      'Kích thước': '56.3mm', 'Cơ chế từ': 'Standard M',
-      'Vật liệu': 'ABS', 'Trọng lượng': '75g',
-      'Cornercut': '≥48°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (MoYu)'
+      'Kích thước': '55.5mm', 'Cơ chế từ': 'Magnetic (Silent)',
+      'Vật liệu': 'ABS', 'Trọng lượng': '73g',
+      'Cornercut': '≥50°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (DaYan)'
     },
-    badges: [{ text: 'WCA', cls: 'badge-blue' }]
+    badges: [{ text: 'Super Silent', cls: 'badge-blue' }]
   },
   {
-    id: 8, name: 'DaYan TengYun V2 M', brand: 'DaYan',
-    price: 540000, oldPrice: null,
-    rating: 4.5, reviews: 88,
-    magnetic: 'Standard Magnet', level: 'Intermediate',
-    tags: ['new'], stock: 'low', stockTxt: 'Còn ít (3)',
-    img: 'https://placehold.co/500x500/120a00/c86400?text=TengYun+V2',
+    id: 8, name: 'GAN 12 UI FreePlay', brand: 'GAN',
+    price: 2150000, oldPrice: null,
+    rating: 5.0, reviews: 88,
+    magnetic: 'Maglev', level: 'Pro',
+    tags: ['new'], stock: 'low', stockTxt: 'Còn ít (2)',
+    img: 'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-llu33sbn8f6n8b',
     imgs: [
-      'https://placehold.co/500x500/120a00/c86400?text=TengYun+V2',
-      'https://placehold.co/500x500/0d1c35/00b4ff?text=Side'
+      'https://down-vn.img.susercontent.com/file/vn-11134207-7r98o-llu33sbn8f6n8b',
+      'https://cubechamp.com/wp-content/uploads/2024/09/Nov-projekt-8.jpg'
     ],
     versions: [
-      { label: 'Stickerless', price: 540000 },
-      { label: 'Black',       price: 540000 }
+      { label: 'Standard',   price: 2150000 },
+      { label: 'w/ PowerPod', price: 2600000 }
     ],
     specs: {
-      'Kích thước': '56mm', 'Cơ chế từ': 'Standard M',
-      'Vật liệu': 'ABS', 'Trọng lượng': '77g',
-      'Cornercut': '≥46°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (DaYan)'
+      'Kích thước': '56mm', 'Cơ chế từ': 'Smart Magnetic',
+      'Vật liệu': 'ABS UV', 'Trọng lượng': '66g',
+      'Cornercut': '≥50°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (GAN)'
     },
-    badges: [{ text: 'New', cls: 'badge-gold' }]
+    badges: [{ text: 'Smart Cube', cls: 'badge-gold' }]
+  },
+{
+    id: 9, // Số tiếp theo sau ID 8
+    name: 'GAN 16 Maglev Ultra', brand: 'GAN',
+    price: 1550000, oldPrice: 1800000,
+    rating: 5.0, reviews: 12,
+    magnetic: 'Maglev 2.0', level: 'Pro',
+    tags: ['new', 'wca'], stock: 'ins', stockTxt: 'Hàng mới về (5)',
+    // Bạn hãy thay link ảnh GAN 16 của bạn vào đây nhé
+    img: 'https://kupsepeti.com/cdn/shop/files/4_223c09ff-25e5-4161-9ee8-f754891a1c3a.png?v=1756397604&width=1445',
+    imgs: [
+      'https://kupsepeti.com/cdn/shop/files/4_223c09ff-25e5-4161-9ee8-f754891a1c3a.png?v=1756397604&width=1445',
+      'https://www.speedcube.co.nz/cdn/shop/files/2_faeeb8a0-910b-4d90-a542-8c1547d16d96.png?v=1754909230&width=1646'
+    ],
+    versions: [
+      { label: 'UV Coated (Enhanced)', price: 1550000 },
+      { label: 'Frosted (Pro)', price: 1400000 }
+    ],
+    specs: {
+      'Kích thước': '56mm', 'Cơ chế từ': 'Quantum Maglev + Ball Core',
+      'Vật liệu': 'Aerospace Grade Plastic', 'Trọng lượng': '62g',
+      'Cornercut': '≥56°', 'Bảo hành': '18 tháng', 'Xuất xứ': 'China (GAN)'
+    },
+    badges: [
+      { text: '-15%', cls: 'badge-red' },
+      { text: 'NEW 2026', cls: 'badge-gold' }, 
+      { text: 'Quantum', cls: 'badge-blue' }
+    ]
+  },
+{
+    id: 10,
+    name: 'CMATH CUBE', brand: 'CMATH',
+    price: 69000, oldPrice: 100000,
+    rating: 3.6, reviews: 69,
+    magnetic: 'No Magnet', level: 'Pro',
+    tags: ['new', 'wca'], stock: 'ins', stockTxt: 'Hàng mới về (5)',
+    // Bạn hãy thay link ảnh GAN 16 của bạn vào đây nhé
+    img: 'https://i.postimg.cc/xjLmrfNf/IMG_20260407_151006.png',
+    imgs: [
+      'https://i.postimg.cc/xjLmrfNf/IMG_20260407_151006.png',
+      'https://i.postimg.cc/CMb8yhnK/IMG_20260407_151020.png',
+      'https://i.postimg.cc/v85nRYxT/IMG_20260407_194913.png'
+    ],
+    versions: [
+      { label: 'Standard', price: 69000 },
+      { label: 'Keychain', price: 69000 }
+    ],
+    specs: {
+      'Kích thước': '36mm', 'Cơ chế từ': 'Không có',
+      'Vật liệu': 'Nhựa đểu', 'Trọng lượng': '36g',
+      'Bảo hành': '6 tháng kể từ khi đỗ chuyên', 'Xuất xứ': 'CMATH'
+    },
+    badges: [
+      { text: '31%', cls: 'badge-red' },
+      { text: 'CMATH EDU', cls: 'badge-gold' }
+    ]
   }
 ];
-
 var services = [
   { id: 'lube', icon: '💧', name: 'Setup & Lube chuyên nghiệp', desc: 'Lube mượt, điều chỉnh lực theo yêu cầu', price: 50000 },
   { id: 'ten',  icon: '🔧', name: 'Điều chỉnh tension',          desc: 'Setup tension tối ưu cho turning style',     price: 30000 },
