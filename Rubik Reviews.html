@@ -9,63 +9,7 @@
 
   <link href="https://fonts.googleapis.com/css2?family=Exo+2:ital,wght@0,400;0,700;0,900;1,400&family=Lexend+Deca:wght@400;600;700&family=Be+Vietnam+Pro:ital,wght@0,300;0,400;0,500;0,600;1,400&display=swap" rel="stylesheet">
 
-  <link rel="stylesheet" href="rubikcss.css">
-  <style>
-    footer {
-      margin-top: 80px;
-    }
-    #reviews {
-      padding-top: 140px;
-      padding-bottom: 60px;
-    }
-    .write-review {
-      margin-top: 60%;
-      background: #0f1a2b;
-      padding: 24px;
-      border-radius: 16px;
-      border: 1px solid rgb(255, 255, 255, 0.5);
-    }
-    .write-title {
-      font-family: 'Exo 2', sans-serif;
-      font-size: 20px;
-      margin-bottom: 16px;
-    }
-    #reviewForm {
-      max-width: 100%;
-      display: grid;
-      grid-template-columns: 1fr 1fr 160px 2fr 140px;
-      gap: 12px;
-      align-items: center;
-    }
-    #reviewForm input,
-    #reviewForm select,
-    #reviewForm textarea {
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-family: 'Be Vietnam Pro', sans-serif;
-      background: #08101f;
-      color: white;
-    }
-    #reviewForm textarea {
-      grid-row: span 2;
-      min-height: 80px;
-      resize: vertical;
-    }
-    #reviewForm button {
-      grid-row: span 2;
-      padding: 12px;
-      border-radius: 10px;
-      border: none;
-      font-weight: 700;
-      background: linear-gradient(135deg, #00b4ff, #00ffe0);
-      cursor: pointer;
-      transition: 0.3s;
-    }
-    #reviewForm button:hover{
-      transform: translateY(-2px);
-    }
-  </style>
+  <link rel="stylesheet" href="rubikcss.css">  
 </head>
 
 <body>
@@ -711,6 +655,11 @@
 
       const reviewHTML = `
       <div class="review-card">
+        <!-- DELETE BUTTON -->
+        <button class="delete-review">
+          ✖
+        </button>
+
         <div class="review-top">
           <div class="review-avatar">
             ${initials}
@@ -729,18 +678,22 @@
             </div>
           </div>
         </div>
+
         <p class="review-text">
           "${review.text}"
         </p>
+
         <div class="review-product">
           📦 ${review.product}
         </div>
+
       </div>
       `;
       grid.insertAdjacentHTML(
         "afterbegin",
         reviewHTML
       );
+      attachDeleteEvents();
     }
 
     /* LẤY NGÀY HÔM NAY */
@@ -752,7 +705,26 @@
         (today.getMonth()+1).toString().padStart(2,"0") +
         "/" +
         today.getFullYear()
-      );
+      ); 
+    }
+
+    function attachDeleteEvents() {
+      document.querySelectorAll(".delete-review").forEach((btn, index) => {
+        btn.onclick = function () {
+          if (!confirm("Xóa review này?"))
+            return;
+
+          /* XÓA UI */
+          const card =
+            this.closest(".review-card");
+          card.remove();
+
+          /* XÓA localStorage */
+          let savedReviews = JSON.parse(localStorage.getItem("reviews")) || [];
+          savedReviews.splice(index, 1);
+          localStorage.setItem("reviews", JSON.stringify(savedReviews));
+        };
+      });
     }
   </script>
 </body>
