@@ -461,11 +461,10 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .product-thumb img {
-  width: 60%;
-  height: 100%;
+  width: 170px;
+  height: 170px;
   object-fit: cover;
   padding: 20px;
-  transition: transform 0.4s ease;
 }
 
 .product-card:hover .product-thumb img {
@@ -676,7 +675,8 @@ input[type="range"]::-webkit-slider-thumb {
 .modal-main-img {
   width: 100%;
   aspect-ratio: 1;
-  object-fit: contain;
+  padding: 20px;
+  object-fit: cover;
   border-radius: 12px;
   background: rgba(0, 180, 255, 0.03);
 }
@@ -706,8 +706,9 @@ input[type="range"]::-webkit-slider-thumb {
 .modal-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   padding: 6px;
+  border-radius: 5px;
 }
 
 .modal-badges {
@@ -715,8 +716,8 @@ input[type="range"]::-webkit-slider-thumb {
   top: 16px;
   left: 16px;
   display: flex;
-  flex-direction: column;
-  gap: 5px;
+  flex-direction: row; /* Thay đổi từ column sang row */
+  gap: 8px;            /* Bạn có thể tăng nhẹ gap để các badge thưa nhau hơn khi nằm ngang */
 }
 
 /* Modal close */
@@ -1177,31 +1178,31 @@ input[type="range"]::-webkit-slider-thumb {
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">GAN</span>
-          <span class="check-count">8</span>
+          <span class="check-count">2</span>
         </label>
         <label class="filter-check" data-filter="brand" data-value="MoYu">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">MoYu</span>
-          <span class="check-count">6</span>
+          <span class="check-count">2</span>
         </label>
         <label class="filter-check" data-filter="brand" data-value="QiYi">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">QiYi</span>
-          <span class="check-count">5</span>
+          <span class="check-count">1</span>
         </label>
-        <label class="filter-check" data-filter="brand" data-value="X-Man">
+        <label class="filter-check" data-filter="brand" data-value="CMATH">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
-          <span class="check-label">X-Man Design</span>
-          <span class="check-count">4</span>
+          <span class="check-label">CMATH</span>
+          <span class="check-count">1</span>
         </label>
         <label class="filter-check" data-filter="brand" data-value="DaYan">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">DaYan</span>
-          <span class="check-count">3</span>
+          <span class="check-count">2</span>
         </label>
       </div>
     </div>
