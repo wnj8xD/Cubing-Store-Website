@@ -513,11 +513,16 @@
     });
 
     /* Checkout button */
-    document.getElementById('cv-checkout-btn').addEventListener('click', function () {
-      var cart = loadCart();
-      if (cart.length === 0) return;
-      alert('Chức năng thanh toán đang được phát triển!\n\nTổng: ' + formatPrice(totalPrice(cart)));
-    });
+/* Checkout button */
+  document.getElementById('cv-checkout-btn').addEventListener('click', function () {
+    var cart = loadCart();
+    if (cart.length === 0) {
+      alert('Giỏ hàng của bạn đang trống!');
+      return;
+    }
+    // Chuyển hướng sang trang checkout.html
+    window.location.href = 'checkout.html';
+  });
 
     /*
      * MỞ SIDEBAR GIỎ HÀNG
