@@ -1989,8 +1989,8 @@ ul {
     </a>
 
     <div class="header-actions">
-      <button class="cart-btn">
-        <a href = "cart.html">🛍️</a>
+      <button class="cart-btn" onclick="alert('Giỏ hàng của bạn')">
+        <a href = "#">🛍️</a>
         <span class="cart-badge" id="cart-count">0</span>
       </button>
     </div>
@@ -1999,7 +1999,7 @@ ul {
   <nav id="navbar">
     <div class="nav-inner">
       <div class="nav-item">
-        <a href = "#shop-category" class="nav-link">Cubes</span>
+        <span class="nav-link">Cubes</span>
         <div class="nav-dropdown">
           <a href="2x2.html"><span class="dd-icon">2️⃣</span>2×2</a>
           <a href="3x3.html"><span class="dd-icon">🟩</span>3×3</a>
@@ -2010,27 +2010,9 @@ ul {
       </div>
       <div class="nav-item">
         <span class="nav-link">Lubes</span>
-        <div class="nav-dropdown">
-          <a href="lubes.html"><span class="dd-icon">💧</span>Speed Lube</a>
-          <a href="lubes.html"><span class="dd-icon">🛢️</span>Heavy Lube</a>
-          <a href="lubes.html"><span class="dd-icon">🧲</span>Magnetic Lube</a>
-          <a href="lubes.html"><span class="dd-icon">🧴</span>Silicone Lube</a>
-          <a href="lubes.html"><span class="dd-icon">📦  </span>Lube Kits</a>
-        </div>
       </div>
       <div class="nav-item">
         <span class="nav-link">Accessories</span>
-        <div class="nav-dropdown">
-          <a href="accessories.html"><span class="dd-icon">⏱️</span>Timers</a>
-          <a href="accessories.html"><span class="dd-icon">🔧</span>Tools</a>
-          <a href="accessories.html"><span class="dd-icon">🎒</span>Bags &amp; Cases</a>
-          <a href="accessories.html"><span class="dd-icon">📋</span>Mats</a>
-          <a href="accessories.html"><span class="dd-icon">🏷️</span>Sticker Sets</a>
-          <a href="accessories.html"><span class="dd-icon">🎁</span>Gift Sets</a>
-        </div>
-      </div>
-      <div class="nav-item">
-        <span class="nav-link" style="color:#ff3d6e">🔥 Sale</span>
       </div>
       <div class="nav-item">
         <span class="nav-link">Blog</span>
@@ -2076,9 +2058,9 @@ ul {
         <a href="3x3.html" class="btn btn-outline">Xem Bộ Sưu Tập</a>
       </div>
       <div class="hero-stats">
-        <div><div class="stat-num">500+</div><div class="stat-label">Sản phẩm</div></div>
-        <div><div class="stat-num">15K+</div><div class="stat-label">Khách hàng</div></div>
-        <div><div class="stat-num">4.9★</div><div class="stat-label">Đánh giá TB</div></div>
+        <div><div class="stat-num">670+</div><div class="stat-label">Sản phẩm</div></div>
+        <div><div class="stat-num">36K+</div><div class="stat-label">Khách hàng</div></div>
+        <div><div class="stat-num">6.7★</div><div class="stat-label">Đánh giá TB</div></div>
         <div><div class="stat-num">50+</div><div class="stat-label">Thương hiệu</div></div>
       </div>
     </div>
@@ -2193,7 +2175,7 @@ ul {
               <div class="banner-kicker" style="color:#ff3d6e">🔥 FLASH SALE</div>
               <h2 class="banner-h2">Sale Cực Shock<br>Đến 50% Off</h2>
               <p class="banner-p">Hàng trăm sản phẩm giảm giá sốc. Số lượng có hạn – nhanh tay kẻo hết!</p>
-              <a href="sale.html" class="btn btn-primary" style="background:#ff3d6e; box-shadow: 0 4px 20px rgba(255,61,110,.4)">Săn Ngay 🔥</a>
+              <a href="3x3.html" class="btn btn-primary" style="background:#ff3d6e; box-shadow: 0 4px 20px rgba(255,61,110,.4)">Săn Ngay 🔥</a>
             </div>
           </div>
           <div class="banner-slide slide-theme-3">
@@ -2280,10 +2262,9 @@ ul {
     <div class="section-header">
       <div>
         <div class="section-label">Danh Mục</div>
-        <h2 class="section-title" id = "shop-category">Shop By Category</h2>
+        <h2 class="section-title">Shop By Category</h2>
         <div class="glow-line"></div>
       </div>
-      <a href="3x3.html" class="view-all-link">Xem tất cả →</a>
     </div>
     <div class="cats-grid">
       <div class="cat-card cat-featured" style="background: linear-gradient(135deg, rgba(0,114,255,0.15), #0a1628);">
@@ -2321,7 +2302,6 @@ ul {
         <h2 class="section-title">Best Sellers 🏆</h2>
         <div class="glow-line"></div>
       </div>
-      <a href="3x3.html" class="view-all-link">Xem tất cả →</a>
     </div>
 
     <div class="product-grid">
@@ -2337,7 +2317,7 @@ ul {
           <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
           <div class="product-actions">
             <a href="cart.html" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
-            <a href="3x3.html" class="btn btn-outline">Xem</a>
+            
           </div>
         </div>
         <div class="product-info">
@@ -2358,7 +2338,7 @@ ul {
           <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
           <div class="product-actions">
             <a href="cart.html" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
-            <a href="3x3.html" class="btn btn-outline">Xem</a>
+            
           </div>
         </div>
         <div class="product-info">
@@ -2379,7 +2359,7 @@ ul {
           <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
           <div class="product-actions">
             <a href="cart.html" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
-            <a href="3x3.html" class="btn btn-outline">Xem</a>
+            
           </div>
         </div>
         <div class="product-info">
@@ -2400,7 +2380,7 @@ ul {
           <button class="wishlist-btn" onclick="toggleWish(this)">♡</button>
           <div class="product-actions">
             <a href="cart.html" class="btn btn-primary" onclick="addToCart(event)">🛒 Thêm giỏ</a>
-            <a href="3x3.html" class="btn btn-outline">Xem</a>
+            
           </div>
         </div>
         <div class="product-info">
