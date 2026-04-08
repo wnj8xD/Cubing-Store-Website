@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Contact – CubeVerse</title>
+
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;900&family=Lexend+Deca:wght@400;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ==============================
+   RESET CƠ BẢN
+   ============================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #050d1a;
+  color: #e8f4ff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #050d1a; }
+::-webkit-scrollbar-thumb { background: #0072ff; border-radius: 99px; }
+
+/* ==============================
+   TOP BAR
+   ============================== */
+#top-bar {
+  background: rgba(5, 13, 26, 0.96);
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-bar-inner {
+  max-width: 1400px;
+  margin: auto;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Logo */
+.logo {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.logo-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 3px;
+  background: rgba(0, 180, 255, 0.08);
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  border-radius: 7px;
+}
+
+.logo-icon span { border-radius: 2px; }
+.logo-icon span:nth-child(1) { background: #ff3d6e; }
+.logo-icon span:nth-child(2) { background: #ffcb2f; }
+.logo-icon span:nth-child(3) { background: #00ffe0; }
+.logo-icon span:nth-child(4) { background: #00b4ff; }
+.logo-icon span:nth-child(5) { background: rgba(255,255,255,0.7); }
+.logo-icon span:nth-child(6) { background: #ff7043; }
+.logo-icon span:nth-child(7) { background: #00ffe0; }
+/* BUG ĐÃ SỬA: emoji 😎 → số 8 đúng cú pháp CSS */
+.logo-icon span:nth-child(8) { background: #ff3d6e; }
+.logo-icon span:nth-child(9) { background: #ffcb2f; }
+
+.logo-blue { color: #00b4ff; }
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #5a7a99;
+  margin-left: 16px;
+}
+.breadcrumb a:hover { color: #00b4ff; }
+.breadcrumb-sep { opacity: 0.4; }
+
+/* Cart */
+.top-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  background: rgba(0, 180, 255, 0.06);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.cart-pill:hover {
+  border-color: #00b4ff;
+  background: rgba(0, 180, 255, 0.12);
+}
+
+.cart-count {
+  background: #ff3d6e;
+  color: #fff;
+  border-radius: 99px;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+/* ==============================
+   CONTACT PAGE LAYOUT
+   ============================== */
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 32px 24px 90px;
+  display: flex;
+  flex-direction: column;
+  gap: 26px;
+}
+
+.page-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 28px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #e8f4ff, #7ac0e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: #5a7a99;
+  margin-top: 6px;
+}
+
+/* ==============================
+   CONTACT GRID
+   ============================== */
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1.3fr 1fr;
+  gap: 20px;
+  align-items: start;
+}
+
+.contact-card {
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.35);
+}
+
+.card-title {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #00b4ff;
+  margin-bottom: 14px;
+}
+
+.card-desc {
+  font-size: 13px;
+  color: #5a7a99;
+  margin-bottom: 18px;
+}
+
+/* Contact Info */
+.info-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.info-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(0, 180, 255, 0.04);
+  border: 1px solid rgba(0, 180, 255, 0.1);
+}
+
+.info-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 180, 255, 0.08);
+  border: 1px solid rgba(0, 180, 255, 0.15);
+  font-size: 16px;
+}
+
+.info-text {
+  flex: 1;
+}
+
+.info-label {
+  font-size: 11px;
+  color: #5a7a99;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+}
+
+.info-value {
+  font-size: 13px;
+  font-weight: 600;
+  color: #e8f4ff;
+}
+
+.info-value a:hover {
+  color: #00b4ff;
+}
+
+/* ==============================
+   FORM
+   ============================== */
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.form-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 12px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 11px;
+  color: #5a7a99;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+
+.form-group input,
+.form-group textarea {
+  width: 100%;
+  padding: 12px 14px;
+  border-radius: 12px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  background: #0d1c35;
+  color: #e8f4ff;
+  font-size: 13px;
+  outline: none;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.form-group textarea {
+  resize: none;
+  min-height: 130px;
+}
+
+.form-group input:focus,
+.form-group textarea:focus {
+  border-color: #00b4ff;
+  box-shadow: 0 0 18px rgba(0, 114, 255, 0.25);
+}
+
+.form-group input::placeholder,
+.form-group textarea::placeholder {
+  color: #5a7a99;
+}
+
+.btn-submit {
+  padding: 13px 16px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  border: none;
+  color: #fff;
+  font-family: 'Lexend Deca', sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 6px 22px rgba(0, 114, 255, 0.35);
+}
+
+.btn-submit:hover {
+  opacity: 0.88;
+  transform: translateY(-2px);
+}
+
+.form-note {
+  font-size: 11px;
+  color: #5a7a99;
+  margin-top: 4px;
+}
+
+/* ==============================
+   MAP PLACEHOLDER
+   ============================== */
+.map-box {
+  margin-top: 16px;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  background: linear-gradient(135deg, #0d1c35, #071220);
+  height: 240px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #5a7a99;
+  font-size: 13px;
+}
+
+/* ==============================
+   FOOTER
+   ============================== */
+.footer-bottom {
+  margin-top: 50px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+  text-align: center;
+  font-size: 12px;
+  color: #5a7a99;
+}
+
+/* ==============================
+   TOAST
+   ============================== */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  background: rgba(5, 13, 26, 0.97);
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease, opacity 0.3s ease;
+  max-width: 320px;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-icon { font-size: 22px; }
+.toast-title { font-size: 13px; font-weight: 700; }
+.toast-sub { font-size: 11px; color: #5a7a99; }
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+@media (max-width: 900px) {
+  .contact-grid {
+    grid-template-columns: 1fr;
+  }
+  .form-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+</style>
+</head>
+
+<body>
+
+<!-- ==============================
+     TOP BAR
+     ============================== -->
+<div id="top-bar">
+  <div class="top-bar-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-icon">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
+      CUBE<span class="logo-blue">VERSE</span>
+    </a>
+
+    <div class="breadcrumb">
+      <a href="index.html">Trang chủ</a>
+      <span class="breadcrumb-sep">›</span>
+      <span style="color:#e8f4ff">Contact</span>
+    </div>
+
+    <div class="top-right">
+      <div class="cart-pill" id="cart-pill">
+        🛍️ Giỏ hàng
+        <div class="cart-count" id="cart-count">0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==============================
+     PAGE
+     ============================== -->
+<div class="page">
+
+  <div>
+    <div class="page-title">Liên hệ CubeVerse</div>
+    <div class="page-sub">Cần tư vấn chọn cube? Muốn setup cube theo style? Nhắn tụi mình ngay.</div>
+  </div>
+
+  <div class="contact-grid">
+
+    <!-- FORM -->
+    <div class="contact-card">
+      <div class="card-title">📩 Gửi tin nhắn cho CubeVerse</div>
+      <div class="card-desc">
+        Điền thông tin bên dưới. Tụi mình sẽ phản hồi trong vòng <b>12 giờ</b>.
+      </div>
+
+      <form class="contact-form" onsubmit="sendContact(event)">
+        <div class="form-row">
+          <div class="form-group">
+            <label>Họ và tên</label>
+            <input type="text" id="name" placeholder="Ví dụ: Nguyễn Văn Sơn" required>
+          </div>
+
+          <div class="form-group">
+            <label>Số điện thoại</label>
+            <input type="text" id="phone" placeholder="Ví dụ: 0987xxxxxx" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label>Email</label>
+          <input type="email" id="email" placeholder="Ví dụ: abc@gmail.com" required>
+        </div>
+
+        <div class="form-group">
+          <label>Nội dung</label>
+          <textarea id="message" placeholder="Bạn cần tư vấn gì? GAN hay MoYu? Beginner hay Pro?" required></textarea>
+        </div>
+
+        <button class="btn-submit" type="submit">🚀 Gửi tin nhắn</button>
+
+        <div class="form-note">
+          
+        </div>
+      </form>
+
+      <div class="map-box">
+        <iframe 
+          src="https://maps.google.com/maps?q=138+Trần+Bình,+Hà+Nội&t=&z=16&ie=UTF8&iwloc=&output=embed" 
+          width="100%" 
+          height="100%" 
+          style="border:0;" 
+          allowfullscreen="" 
+          loading="lazy" 
+          referrerpolicy="no-referrer-when-downgrade">
+        </iframe>
+      </div>
+    </div>
+
+    <!-- INFO -->
+    <div class="contact-card">
+      <div class="card-title">📌 Thông tin liên hệ</div>
+      <div class="card-desc">
+        Bạn có thể liên hệ trực tiếp qua các kênh bên dưới.
+      </div>
+
+      <div class="info-list">
+
+        <div class="info-item">
+          <div class="info-icon">📍</div>
+          <div class="info-text">
+            <div class="info-label">Địa chỉ</div>
+            <div class="info-value">138 Trần Bình, Hà Nội, Việt Nam</div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">☎️</div>
+          <div class="info-text">
+            <div class="info-label">Hotline</div>
+            <div class="info-value">
+              <a href="tel:0987654321">0987 654 321</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📧</div>
+          <div class="info-text">
+            <div class="info-label">Email</div>
+            <div class="info-value">
+              <a href="mailto:cubeverse.shop@gmail.com">cubeverse.shop@gmail.com</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">💬</div>
+          <div class="info-text">
+            <div class="info-label">Facebook</div>
+            <div class="info-value">
+              <a href="https://facebook.com" target="_blank">CubeVerse Official</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">📷</div>
+          <div class="info-text">
+            <div class="info-label">Instagram</div>
+            <div class="info-value">
+              <a href="https://instagram.com" target="_blank">@cubeverse.vn</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">⏰</div>
+          <div class="info-text">
+            <div class="info-label">Giờ hoạt động</div>
+            <div class="info-value">8:00 – 22:00 (Hằng ngày)</div>
+          </div>
+        </div>
+
+        <div class="info-item">
+          <div class="info-icon">🚚</div>
+          <div class="info-text">
+            <div class="info-label">Giao hàng</div>
+            <div class="info-value">Ship toàn quốc 2–3 ngày</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </div>
+
+  <div class="footer-bottom">
+    © 2026 CubeVerse. All rights reserved. | Contact Page
+  </div>
+
+</div>
+
+
+<!-- ==============================
+     TOAST
+     ============================== -->
+<div class="toast" id="toast">
+  <div class="toast-icon">✅</div>
+  <div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-sub"   id="toast-sub"></div>
+  </div>
+</div>
+
+
+<script>
+/* ---- TOAST ---- */
+function showToast(title, sub) {
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-sub').textContent   = sub;
+  var toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 3200);
+}
+
+/* ---- CONTACT FORM SUBMIT ---- */
+function sendContact(e) {
+  e.preventDefault();
+
+  var name    = document.getElementById('name').value.trim();
+  var phone   = document.getElementById('phone').value.trim();
+  var email   = document.getElementById('email').value.trim();
+  var message = document.getElementById('message').value.trim();
+
+  if (!name || !phone || !email || !message) return;
+
+  showToast("Gửi thành công!", "Cảm ơn " + name + ", CubeVerse sẽ phản hồi sớm.");
+
+  document.getElementById('name').value    = "";
+  document.getElementById('phone').value   = "";
+  document.getElementById('email').value   = "";
+  document.getElementById('message').value = "";
+}
+</script>
+<script src="carts.js"></script>
+</body>
+</html>
