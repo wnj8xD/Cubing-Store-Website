@@ -1,0 +1,2170 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>4x4 Cubes – CubeVerse</title>
+<link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;600;700;900&family=Lexend+Deca:wght@400;600;700&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+<style>
+
+/* ==============================
+   RESET CƠ BẢN
+   ============================== */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: #050d1a;
+  color: #e8f4ff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 14px;
+  line-height: 1.6;
+  min-height: 100vh;
+}
+
+a { color: inherit; text-decoration: none; }
+ul { list-style: none; }
+
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #050d1a; }
+::-webkit-scrollbar-thumb { background: #0072ff; border-radius: 99px; }
+
+/* ==============================
+   TOP BAR
+   ============================== */
+#top-bar {
+  background: rgba(5, 13, 26, 0.96);
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+}
+
+.top-bar-inner {
+  max-width: 1400px;
+  margin: auto;
+  padding: 0 24px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+/* Logo */
+.logo {
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 900;
+  font-size: 18px;
+  letter-spacing: 0.06em;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  white-space: nowrap;
+}
+
+.logo-icon {
+  width: 30px;
+  height: 30px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 2px;
+  padding: 3px;
+  background: rgba(0, 180, 255, 0.08);
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  border-radius: 7px;
+}
+
+.logo-icon span { border-radius: 2px; }
+.logo-icon span:nth-child(1) { background: #ff3d6e; }
+.logo-icon span:nth-child(2) { background: #ffcb2f; }
+.logo-icon span:nth-child(3) { background: #00ffe0; }
+.logo-icon span:nth-child(4) { background: #00b4ff; }
+.logo-icon span:nth-child(5) { background: rgba(255,255,255,0.7); }
+.logo-icon span:nth-child(6) { background: #ff7043; }
+.logo-icon span:nth-child(7) { background: #00ffe0; }
+.logo-icon span:nth-child(8) { background: #ff3d6e; }
+.logo-icon span:nth-child(9) { background: #ffcb2f; }
+
+.logo-blue { color: #00b4ff; }
+
+/* Breadcrumb */
+.breadcrumb {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+  color: #5a7a99;
+  margin-left: 16px;
+}
+.breadcrumb a:hover { color: #00b4ff; }
+.breadcrumb-sep { opacity: 0.4; }
+
+/* Cart */
+.top-right {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.cart-pill {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  background: rgba(0, 180, 255, 0.06);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.cart-pill:hover {
+  border-color: #00b4ff;
+  background: rgba(0, 180, 255, 0.12);
+}
+
+.cart-count {
+  background: #ff3d6e;
+  color: #fff;
+  border-radius: 99px;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+}
+
+/* ==============================
+   LAYOUT
+   ============================== */
+.page {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 28px 24px 80px;
+  display: grid;
+  grid-template-columns: 240px 1fr;
+  gap: 24px;
+  align-items: start;
+}
+
+/* ==============================
+   SIDEBAR
+   ============================== */
+.sidebar {
+  position: sticky;
+  top: 88px;
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.filter-header {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #00b4ff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.filter-reset {
+  font-size: 11px;
+  font-weight: 400;
+  color: #5a7a99;
+  cursor: pointer;
+  letter-spacing: 0;
+  transition: color 0.2s;
+}
+.filter-reset:hover { color: #ff3d6e; }
+
+.filter-group-title {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #e8f4ff;
+  margin-bottom: 10px;
+  padding-bottom: 6px;
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+}
+
+/* Price slider */
+.price-row {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.price-labels {
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: #5a7a99;
+}
+
+.price-labels span {
+  color: #00b4ff;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+}
+
+input[type="range"] {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 3px;
+  background: linear-gradient(90deg, #0072ff 100%, rgba(0,180,255,0.15) 100%);
+  border-radius: 99px;
+  outline: none;
+  cursor: pointer;
+}
+
+input[type="range"]::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #00b4ff;
+  border: 2px solid #050d1a;
+  box-shadow: 0 0 8px rgba(0,114,255,0.35);
+  cursor: pointer;
+}
+
+/* Checkbox filters */
+.filter-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.filter-check {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  cursor: pointer;
+  font-size: 13px;
+  color: #5a7a99;
+  transition: color 0.2s;
+}
+.filter-check:hover { color: #e8f4ff; }
+.filter-check input { display: none; }
+
+.check-box {
+  width: 16px;
+  height: 16px;
+  border-radius: 4px;
+  border: 1.5px solid rgba(0, 180, 255, 0.3);
+  background: transparent;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s, border-color 0.2s;
+  font-size: 10px;
+  color: transparent;
+}
+
+.filter-check input:checked + .check-box {
+  background: #0072ff;
+  border-color: #00b4ff;
+  color: #fff;
+}
+
+.check-label { flex: 1; }
+.check-count { font-size: 11px; opacity: 0.5; }
+
+/* Star radio */
+.star-radio {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+  padding: 5px 0;
+  color: #5a7a99;
+  font-size: 13px;
+  transition: color 0.2s;
+}
+.star-radio:hover { color: #e8f4ff; }
+.star-radio input { display: none; }
+.star-gold { color: #ffcb2f; letter-spacing: 1px; font-size: 12px; }
+
+/* ==============================
+   MAIN CONTENT
+   ============================== */
+.main-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.page-title {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 26px;
+  font-weight: 900;
+  background: linear-gradient(135deg, #e8f4ff, #7ac0e8);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.page-sub {
+  font-size: 13px;
+  color: #5a7a99;
+  margin-top: 4px;
+}
+
+/* Toolbar */
+.toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.toolbar-left {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.result-count { font-size: 13px; color: #5a7a99; }
+.result-count strong { color: #e8f4ff; }
+
+.search-box {
+  position: relative;
+}
+
+.search-box input {
+  padding: 9px 36px 9px 14px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  border-radius: 8px;
+  background: #0a1628;
+  color: #e8f4ff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px;
+  width: 200px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.search-box input:focus { border-color: #00b4ff; }
+.search-box input::placeholder { color: #5a7a99; }
+.search-icon {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #5a7a99;
+  pointer-events: none;
+}
+
+.sort-select {
+  padding: 9px 12px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  border-radius: 8px;
+  background: #0a1628;
+  color: #e8f4ff;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+}
+.sort-select:focus { border-color: #00b4ff; }
+
+/* Active filter chips */
+.active-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.filter-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 4px 10px;
+  border-radius: 99px;
+  background: rgba(0, 180, 255, 0.1);
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  font-size: 11px;
+  font-weight: 600;
+  color: #00b4ff;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+.filter-chip:hover { background: rgba(0, 180, 255, 0.2); }
+.chip-x { opacity: 0.6; }
+
+/* ==============================
+   PRODUCT GRID
+   ============================== */
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 18px;
+}
+
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.product-card {
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  transition: transform 0.22s, box-shadow 0.22s, border-color 0.22s;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  animation: fadeUp 0.4s ease both;
+}
+
+.product-card:hover {
+  transform: translateY(-6px);
+  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.45);
+  border-color: rgba(0, 180, 255, 0.3);
+}
+
+/* Product image */
+.product-thumb {
+  height: 200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+  background: linear-gradient(135deg, #0d1c35, #0a1f3a);
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+}
+
+.product-thumb img {
+  width: 170px;
+  height: 170px;
+  object-fit: cover;
+  padding: 20px;
+  transition: transform 0.4s ease;
+}
+
+.product-card:hover .product-thumb img {
+  transform: scale(1.08);
+}
+
+/* Badges */
+.badge-wrap {
+  position: absolute;
+  top: 10px;
+  left: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 2;
+}
+
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 99px;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+}
+
+.badge-red  { background: rgba(255,61,110,0.15); color: #ff3d6e;  border: 1px solid rgba(255,61,110,0.3);  }
+.badge-blue { background: rgba(0,180,255,0.15);  color: #00b4ff;  border: 1px solid rgba(0,180,255,0.3);   }
+.badge-gold { background: rgba(255,203,47,0.12); color: #ffcb2f;  border: 1px solid rgba(255,203,47,0.25); }
+.badge-green{ background: rgba(0,230,120,0.12);  color: #00e678;  border: 1px solid rgba(0,230,120,0.25);  }
+
+/* Wishlist button */
+.wishlist-btn {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background: rgba(8, 15, 30, 0.85);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  color: #5a7a99;
+  z-index: 2;
+}
+
+.wishlist-btn:hover { color: #ff3d6e; border-color: #ff3d6e; }
+.wishlist-btn.active { color: #ff3d6e; border-color: #ff3d6e; background: rgba(255,61,110,0.12); }
+
+/* Product info */
+.product-info {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  flex: 1;
+}
+
+.product-brand {
+  font-size: 10px;
+  color: #5a7a99;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  font-family: 'Exo 2', sans-serif;
+}
+
+.product-name {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  line-height: 1.3;
+}
+
+.product-specs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+}
+
+.spec-tag {
+  font-size: 10px;
+  padding: 2px 7px;
+  border-radius: 4px;
+  background: rgba(0, 180, 255, 0.07);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  color: #5a7a99;
+}
+
+.product-rating {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.stars { color: #ffcb2f; font-size: 11px; letter-spacing: 1px; }
+.rating-count { font-size: 11px; color: #5a7a99; }
+
+.product-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: auto;
+  padding-top: 10px;
+  border-top: 1px solid rgba(0, 180, 255, 0.12);
+}
+
+.product-price {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 18px;
+  font-weight: 900;
+  color: #00b4ff;
+}
+
+.product-price-old {
+  font-size: 11px;
+  color: #5a7a99;
+  text-decoration: line-through;
+  display: block;
+  margin-top: 1px;
+}
+
+.btn-add-quick {
+  padding: 7px 14px;
+  border-radius: 7px;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  color: #fff;
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  transition: opacity 0.2s, transform 0.2s;
+  box-shadow: 0 4px 14px rgba(0, 114, 255, 0.35);
+}
+.btn-add-quick:hover { opacity: 0.85; transform: translateY(-1px); }
+
+/* No results */
+.no-results {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 60px 20px;
+  color: #5a7a99;
+}
+.no-results-icon { font-size: 48px; margin-bottom: 12px; }
+
+/* ==============================
+   MODAL
+   ============================== */
+.overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2, 7, 15, 0.85);
+  z-index: 500;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+
+.overlay.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal {
+  background: #0a1628;
+  border: 1px solid rgba(0, 180, 255, 0.3);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 920px;
+  max-height: 90vh;
+  overflow-y: auto;
+  box-shadow: 0 40px 100px rgba(0, 0, 0, 0.8);
+  transform: translateY(24px) scale(0.97);
+  transition: transform 0.3s ease;
+  position: relative;
+}
+
+.overlay.open .modal {
+  transform: translateY(0) scale(1);
+}
+
+.modal-inner {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Modal left (gallery) */
+.modal-gallery {
+  padding: 32px;
+  background: linear-gradient(135deg, #0a1628, #071220);
+  border-right: 1px solid rgba(0, 180, 255, 0.12);
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  border-radius: 20px 0 0 20px;
+  position: relative;
+}
+
+.modal-main-img {
+  width: 100%;
+  aspect-ratio: 1;
+  padding: 20px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: rgba(0, 180, 255, 0.03);
+}
+
+.modal-thumbs {
+  display: flex;
+  gap: 8px;
+}
+
+.modal-thumb {
+  width: 56px;
+  height: 56px;
+  border-radius: 8px;
+  border: 2px solid rgba(0, 180, 255, 0.12);
+  overflow: hidden;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  background: #0d1c35;
+  flex-shrink: 0;
+}
+
+.modal-thumb.active {
+  border-color: #00b4ff;
+  box-shadow: 0 0 10px rgba(0, 114, 255, 0.35);
+}
+
+.modal-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  padding: 6px;
+  border-radius: 5px;
+}
+
+.modal-badges {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  display: flex;
+  flex-direction: row; /* Thay đổi từ column sang row */
+  gap: 8px;            /* Bạn có thể tăng nhẹ gap để các badge thưa nhau hơn khi nằm ngang */
+}
+
+/* Modal close */
+.modal-close {
+  position: absolute;
+  top: 16px;
+  right: 16px;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(0, 180, 255, 0.12);
+  color: #5a7a99;
+  font-size: 16px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.2s, border-color 0.2s, background 0.2s;
+  z-index: 10;
+}
+.modal-close:hover { color: #fff; border-color: #ff3d6e; background: rgba(255,61,110,0.15); }
+
+/* Modal right (info) */
+.modal-info {
+  padding: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  overflow-y: auto;
+}
+
+.modal-brand {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: #00b4ff;
+}
+
+.modal-name {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 22px;
+  font-weight: 700;
+  line-height: 1.2;
+}
+
+.modal-rating-row {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stock-indicator {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 12px;
+  color: #5a7a99;
+  margin-left: 12px;
+}
+
+.stock-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+}
+.stock-dot.ins  { background: #00e678; box-shadow: 0 0 6px rgba(0,230,120,0.6); }
+.stock-dot.low  { background: #ffcb2f; }
+.stock-dot.nos  { background: #ff3d6e; }
+
+/* Price block */
+.price-block {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+}
+
+.modal-price {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 30px;
+  font-weight: 900;
+  color: #00b4ff;
+  line-height: 1;
+}
+
+.modal-price-old {
+  font-size: 14px;
+  color: #5a7a99;
+  text-decoration: line-through;
+}
+
+.discount-badge {
+  font-size: 12px;
+  font-weight: 700;
+  color: #ff3d6e;
+  background: rgba(255,61,110,0.12);
+  border: 1px solid rgba(255,61,110,0.2);
+  border-radius: 5px;
+  padding: 2px 7px;
+}
+
+/* Divider */
+.divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, #00b4ff, transparent);
+  opacity: 0.25;
+}
+
+/* Tabs in modal */
+.modal-tabs {
+  display: flex;
+  gap: 4px;
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+  margin-bottom: 12px;
+}
+
+.modal-tab {
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5a7a99;
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  margin-bottom: -1px;
+  transition: color 0.2s;
+  font-family: 'Lexend Deca', sans-serif;
+}
+
+.modal-tab.active {
+  color: #00b4ff;
+  border-bottom-color: #00b4ff;
+}
+
+.modal-tab-panel { display: none; }
+.modal-tab-panel.active { display: block; }
+
+/* Version / Service selectors */
+.section-label-sm {
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 12px;
+  font-weight: 700;
+  color: #5a7a99;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 8px;
+}
+
+.version-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.version-btn {
+  padding: 7px 14px;
+  border-radius: 8px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  background: #0d1c35;
+  color: #5a7a99;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+  text-align: center;
+}
+
+.version-btn:hover { border-color: #00b4ff; color: #e8f4ff; }
+
+.version-btn.active {
+  border-color: #00b4ff;
+  color: #00b4ff;
+  background: rgba(0, 180, 255, 0.08);
+  box-shadow: 0 0 12px rgba(0, 114, 255, 0.35);
+}
+
+/* Service items */
+.service-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.service-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  background: #0d1c35;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+}
+
+.service-item:hover { border-color: rgba(0, 180, 255, 0.3); }
+.service-item.selected { border-color: #00b4ff; background: rgba(0, 180, 255, 0.06); }
+
+.service-icon { font-size: 18px; flex-shrink: 0; }
+.service-text { flex: 1; }
+.service-name { font-size: 13px; font-weight: 600; }
+.service-desc { font-size: 11px; color: #5a7a99; }
+.service-price { font-family: 'Exo 2', sans-serif; font-size: 13px; font-weight: 700; color: #ffcb2f; white-space: nowrap; }
+
+.service-check {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  border: 1.5px solid rgba(0, 180, 255, 0.3);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 10px;
+  flex-shrink: 0;
+  transition: background 0.2s, border-color 0.2s;
+  color: transparent;
+}
+
+.service-item.selected .service-check {
+  background: #0072ff;
+  border-color: #00b4ff;
+  color: #fff;
+}
+
+/* Specs table */
+.specs-table {
+  display: flex;
+  flex-direction: column;
+}
+
+.spec-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px 0;
+  border-bottom: 1px solid rgba(0, 180, 255, 0.12);
+  font-size: 12px;
+}
+.spec-row:last-child { border-bottom: none; }
+.spec-key { color: #5a7a99; }
+.spec-val { color: #e8f4ff; font-weight: 600; font-family: 'Exo 2', sans-serif; }
+
+/* Quantity + total */
+.quantity-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.qty-control {
+  display: flex;
+  align-items: center;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.qty-btn {
+  width: 34px;
+  height: 34px;
+  background: #0d1c35;
+  border: none;
+  color: #e8f4ff;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.qty-btn:hover { background: rgba(0, 180, 255, 0.12); }
+
+.qty-input {
+  width: 36px;
+  text-align: center;
+  font-family: 'Exo 2', sans-serif;
+  font-weight: 700;
+  font-size: 14px;
+  background: transparent;
+  border: none;
+  color: #e8f4ff;
+  outline: none;
+}
+
+.total-block {
+  margin-left: auto;
+  text-align: right;
+}
+.total-label { font-size: 11px; color: #5a7a99; }
+.total-value {
+  font-family: 'Exo 2', sans-serif;
+  font-size: 20px;
+  font-weight: 900;
+  color: #e8f4ff;
+}
+
+/* Modal action buttons */
+.modal-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.btn-add-cart {
+  flex: 1;
+  padding: 13px 20px;
+  border-radius: 10px;
+  background: linear-gradient(135deg, #0072ff, #00b4ff);
+  color: #fff;
+  font-family: 'Lexend Deca', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+  border: none;
+  cursor: pointer;
+  box-shadow: 0 6px 24px rgba(0, 114, 255, 0.35);
+  transition: opacity 0.2s, transform 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.btn-add-cart:hover { opacity: 0.88; transform: translateY(-2px); }
+
+.btn-wishlist-modal {
+  padding: 13px 16px;
+  border-radius: 10px;
+  border: 1.5px solid rgba(0, 180, 255, 0.12);
+  background: transparent;
+  color: #5a7a99;
+  font-size: 18px;
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s, background 0.2s;
+}
+.btn-wishlist-modal:hover { border-color: #ff3d6e; color: #ff3d6e; background: rgba(255,61,110,0.08); }
+.btn-wishlist-modal.active { border-color: #ff3d6e; color: #ff3d6e; background: rgba(255,61,110,0.1); }
+
+.modal-trust {
+  font-size: 11px;
+  color: #5a7a99;
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ==============================
+   TOAST
+   ============================== */
+.toast {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 999;
+  background: rgba(5, 13, 26, 0.97);
+  border: 1px solid rgba(0, 180, 255, 0.2);
+  border-radius: 12px;
+  padding: 14px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  transform: translateY(20px);
+  opacity: 0;
+  pointer-events: none;
+  transition: transform 0.35s ease, opacity 0.3s ease;
+  max-width: 300px;
+}
+
+.toast.show {
+  transform: translateY(0);
+  opacity: 1;
+}
+
+.toast-icon { font-size: 22px; }
+.toast-title { font-size: 13px; font-weight: 600; }
+.toast-sub { font-size: 11px; color: #5a7a99; }
+
+/* ==============================
+   RESPONSIVE
+   ============================== */
+@media (max-width: 900px) {
+  .page { grid-template-columns: 1fr; }
+  .sidebar { position: static; }
+  .product-grid { grid-template-columns: repeat(2, 1fr); }
+  .modal-inner { grid-template-columns: 1fr; }
+  .modal-gallery { border-right: none; border-bottom: 1px solid rgba(0,180,255,0.12); border-radius: 20px 20px 0 0; }
+}
+
+@media (max-width: 560px) {
+  .product-grid { grid-template-columns: 1fr; }
+}
+
+</style>
+</head>
+<body>
+
+<!-- ==============================
+     TOP BAR
+     ============================== -->
+<div id="top-bar">
+  <div class="top-bar-inner">
+    <a href="#" class="logo">
+      <div class="logo-icon">
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+        <span></span><span></span><span></span>
+      </div>
+      CUBE<span class="logo-blue">VERSE</span>
+    </a>
+
+<div class="breadcrumb">
+    <a href="index.html">Trang chủ</a>
+    <span class="breadcrumb-sep">›</span>
+    
+    <a href="index.html#shop-category">Cubes</a>
+    
+    <span class="breadcrumb-sep">›</span>
+    <span style="color:#e8f4ff">4x4 Cubes</span>
+</div>
+
+    <div class="top-right">
+      <div class="cart-pill" id="cart-pill">
+        🛍️ Giỏ hàng
+        <div class="cart-count" id="cart-count">0</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ==============================
+     PAGE LAYOUT
+     ============================== -->
+<div class="page">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+
+    <div class="filter-header">
+      BỘ LỌC
+      <span class="filter-reset" onclick="resetFilters()">Xóa tất cả</span>
+    </div>
+
+    <!-- Giá -->
+    <div>
+      <div class="filter-group-title">💰 Khoảng giá</div>
+      <div class="price-row">
+        <input type="range" id="price-slider" min="0" max="2000" value="2000" step="50" oninput="updatePrice(this.value)">
+        <div class="price-labels">
+          <span>0₫</span>
+          <span id="price-label">2.000.000₫</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Thương hiệu -->
+    <div>
+      <div class="filter-group-title">🏷️ Thương hiệu</div>
+      <div class="filter-list">
+        <label class="filter-check" data-filter="brand" data-value="GAN">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">GAN</span>
+          <span class="check-count">1</span>
+        </label>
+        <label class="filter-check" data-filter="brand" data-value="MoYu">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">MoYu</span>
+          <span class="check-count">3</span>
+        </label>
+        <label class="filter-check" data-filter="brand" data-value="QiYi">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">QiYi</span>
+          <span class="check-count">2</span>
+        </label>
+        <label class="filter-check" data-filter="brand" data-value="YJ">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">YJ</span>
+          <span class="check-count">2</span>
+        </label>
+        <label class="filter-check" data-filter="brand" data-value="ShengShou">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">ShengShou</span>
+          <span class="check-count">1</span>
+        </label>
+        <label class="filter-check" data-filter="brand" data-value="DaYan">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">DaYan</span>
+          <span class="check-count">1</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Nam châm -->
+    <div>
+      <div class="filter-group-title">🧲 Nam châm</div>
+      <div class="filter-list">
+        <label class="filter-check" data-filter="magnetic" data-value="Maglev">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Maglev</span>
+        </label>
+        <label class="filter-check" data-filter="magnetic" data-value="Standard Magnet">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Standard Magnet</span>
+        </label>
+        <label class="filter-check" data-filter="magnetic" data-value="No Magnet">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Không từ</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Trình độ -->
+    <div>
+      <div class="filter-group-title">🎯 Trình độ</div>
+      <div class="filter-list">
+        <label class="filter-check" data-filter="level" data-value="Beginner">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Người mới</span>
+        </label>
+        <label class="filter-check" data-filter="level" data-value="Intermediate">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Trung cấp</span>
+        </label>
+        <label class="filter-check" data-filter="level" data-value="Pro">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Chuyên nghiệp</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Đánh giá -->
+    <div>
+      <div class="filter-group-title">⭐ Đánh giá</div>
+      <div class="filter-list">
+        <label class="star-radio">
+          <input type="radio" name="star-filter" value="5" onchange="applyFilters()">
+          <span class="star-gold">★★★★★</span>
+          <span style="font-size:11px; color:#5a7a99;">5 sao</span>
+        </label>
+        <label class="star-radio">
+          <input type="radio" name="star-filter" value="4" onchange="applyFilters()">
+          <span class="star-gold">★★★★☆</span>
+          <span style="font-size:11px; color:#5a7a99;">4+ sao</span>
+        </label>
+        <label class="star-radio">
+          <input type="radio" name="star-filter" value="0" onchange="applyFilters()">
+          <span class="star-gold">★☆☆☆☆</span>
+          <span style="font-size:11px; color:#5a7a99;">Tất cả</span>
+        </label>
+      </div>
+    </div>
+
+    <!-- Ưu đãi -->
+    <div>
+      <div class="filter-group-title">🏷️ Ưu đãi</div>
+      <div class="filter-list">
+        <label class="filter-check" data-filter="promo" data-value="sale">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Đang giảm giá</span>
+        </label>
+        <label class="filter-check" data-filter="promo" data-value="new">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">Hàng mới về</span>
+        </label>
+        <label class="filter-check" data-filter="promo" data-value="wca">
+          <input type="checkbox" onchange="applyFilters()">
+          <span class="check-box">✓</span>
+          <span class="check-label">WCA Official</span>
+        </label>
+      </div>
+    </div>
+
+  </aside>
+
+
+  <!-- MAIN CONTENT -->
+  <div class="main-content">
+    <div>
+      <div class="page-title">4x4 Speed Cubes</div>
+      <div class="page-sub">Bộ sưu tập rubik 4x4 – từ entry-level đến flagship chuyên nghiệp</div>
+    </div>
+
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="toolbar-left">
+        <div class="result-count">Hiển thị <strong id="result-count">8</strong> sản phẩm</div>
+        <div class="search-box">
+          <input type="text" id="search-input" placeholder="Tìm trong 4x4..." oninput="applyFilters()">
+          <span class="search-icon">🔍</span>
+        </div>
+      </div>
+      <select class="sort-select" id="sort-select" onchange="applyFilters()">
+        <option value="popular">Phổ biến nhất</option>
+        <option value="price-asc">Giá: Thấp → Cao</option>
+        <option value="price-desc">Giá: Cao → Thấp</option>
+        <option value="rating">Đánh giá cao nhất</option>
+        <option value="newest">Mới nhất</option>
+      </select>
+    </div>
+
+    <!-- Active filter chips -->
+    <div class="active-filters" id="active-filters" style="display:none;"></div>
+
+    <!-- Product Grid -->
+    <div class="product-grid" id="product-grid"></div>
+  </div>
+
+</div>
+
+
+<!-- ==============================
+     MODAL
+     ============================== -->
+<div class="overlay" id="overlay" onclick="closeModalOnBg(event)">
+  <div class="modal" id="modal">
+    <button class="modal-close" onclick="closeModal()">✕</button>
+    <div class="modal-inner">
+
+      <!-- Gallery (trái) -->
+      <div class="modal-gallery">
+        <div class="modal-badges" id="modal-badges"></div>
+        <img class="modal-main-img" id="modal-main-img" src="" alt="">
+        <div class="modal-thumbs" id="modal-thumbs"></div>
+      </div>
+
+      <!-- Info (phải) -->
+      <div class="modal-info">
+        <div>
+          <div class="modal-brand" id="modal-brand"></div>
+          <div class="modal-name"  id="modal-name"></div>
+        </div>
+
+        <div class="modal-rating-row">
+          <span class="stars" id="modal-stars"></span>
+          <span class="rating-count" id="modal-rating-count"></span>
+          <span class="stock-indicator" id="modal-stock"></span>
+        </div>
+
+        <div class="divider"></div>
+
+        <div class="price-block">
+          <div class="modal-price" id="modal-price"></div>
+          <div class="modal-price-old" id="modal-price-old"></div>
+          <div class="discount-badge" id="modal-discount" style="display:none;"></div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="modal-tabs">
+          <div class="modal-tab active" onclick="switchModalTab(this, 'versions')">🎨 Phiên bản</div>
+          <div class="modal-tab" onclick="switchModalTab(this, 'services')">🔧 Dịch vụ</div>
+          <div class="modal-tab" onclick="switchModalTab(this, 'specs')">📋 Thông số</div>
+        </div>
+
+        <div class="modal-tab-panel active" id="tab-versions">
+          <div class="section-label-sm">Chọn phiên bản</div>
+          <div class="version-grid" id="version-grid"></div>
+        </div>
+
+        <div class="modal-tab-panel" id="tab-services">
+          <div class="section-label-sm">Dịch vụ thêm</div>
+          <div class="service-list" id="service-list"></div>
+        </div>
+
+        <div class="modal-tab-panel" id="tab-specs">
+          <div class="specs-table" id="specs-table"></div>
+        </div>
+
+        <div class="divider"></div>
+
+        <!-- Số lượng + tổng tiền -->
+        <div class="quantity-row">
+          <div>
+            <div class="section-label-sm" style="margin-bottom:6px;">Số lượng</div>
+            <div class="qty-control">
+              <button class="qty-btn" onclick="changeQty(-1)">−</button>
+              <input class="qty-input" id="qty-input" type="number" value="1" min="1" oninput="updateTotal()">
+              <button class="qty-btn" onclick="changeQty(1)">+</button>
+            </div>
+          </div>
+          <div class="total-block">
+            <div class="total-label">Tổng cộng</div>
+            <div class="total-value" id="modal-total">0₫</div>
+          </div>
+        </div>
+
+        <!-- Buttons -->
+        <div class="modal-actions">
+          <button class="btn-add-cart" onclick="addToCartFromModal()">🛒 Thêm vào giỏ hàng</button>
+          <button class="btn-wishlist-modal" id="modal-wish-btn" onclick="toggleWishModal()" title="Yêu thích">♡</button>
+        </div>
+
+        <div class="modal-trust">
+          <span>✅ Hàng chính hãng 100%</span>
+          <span>🚀 Ship 2–3 ngày</span>
+          <span>🔄 Đổi trả 30 ngày</span>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+
+<!-- ==============================
+     TOAST
+     ============================== -->
+<div class="toast" id="toast">
+  <div class="toast-icon">🛒</div>
+  <div>
+    <div class="toast-title" id="toast-title"></div>
+    <div class="toast-sub"   id="toast-sub"></div>
+  </div>
+</div>
+
+
+<!-- ==============================
+     JAVASCRIPT
+     ============================== -->
+<script>
+
+/* ---- DỮ LIỆU SẢN PHẨM (ĐÃ CẬP NHẬT 3X3 MỚI NHẤT 2026) ---- */
+var products = [
+  {
+    id: 1, name: 'GAN 460 M Magnetic', brand: 'GAN',
+    price: 1150000, oldPrice: 1350000,
+    rating: 4.8, reviews: 112,
+    magnetic: 'Dual Magnetic', level: 'Pro',
+    tags: ['sale', 'wca'], stock: 'ins', stockTxt: 'Còn hàng (5)',
+    img: 'https://tse4.mm.bing.net/th/id/OIP.O3_mvwoW0GotITryPGcwRwHaHa?pid=Api&P=0&h=220',
+    imgs: [
+      'https://tse4.mm.bing.net/th/id/OIP.O3_mvwoW0GotITryPGcwRwHaHa?pid=Api&P=0&h=220'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 1150000 },
+      { label: 'Black Base', price: 1150000 }
+    ],
+    specs: {
+      'Kích thước': '60mm', 'Cơ chế từ': 'GANCUBE Dual Magnet',
+      'Vật liệu': 'ABS Cao cấp', 'Trọng lượng': '139g',
+      'Cornercut': '≥40°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (GAN)'
+    },
+    badges: [{ text: '-15%', cls: 'badge-red' }, { text: 'WCA', cls: 'badge-blue' }, { text: 'Flagship', cls: 'badge-gold' }]
+  },
+  {
+    id: 2, name: 'MoYu AOSU WRM Magnetic', brand: 'MoYu',
+    price: 850000, oldPrice: null,
+    rating: 5.0, reviews: 245,
+    magnetic: 'Strong Magnet', level: 'Pro',
+    tags: ['best-seller'], stock: 'ins', stockTxt: 'Còn hàng (15)',
+    img: 'https://img.everymarket.com/mxpromkzeetonkzfhez69cvvm9cr?width=800&height=800&format=jpg',
+    imgs: [
+      'https://img.everymarket.com/mxpromkzeetonkzfhez69cvvm9cr?width=800&height=800&format=jpg'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 850000 }
+    ],
+    specs: {
+      'Kích thước': '59mm', 'Cơ chế từ': 'Standard Magnetic',
+      'Vật liệu': 'ABS Plastic', 'Trọng lượng': '142g',
+      'Cornercut': '≥42°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (MoYu)'
+    },
+    badges: [{ text: 'Pro Choice', cls: 'badge-gold' }, { text: 'Hot', cls: 'badge-red' }]
+  },
+  {
+    id: 3, name: 'Valk 4 M Magnetic', brand: 'QiYi',
+    price: 720000, oldPrice: 850000,
+    rating: 4.9, reviews: 89,
+    magnetic: 'Standard Magnet', level: 'Pro',
+    tags: ['legend'], stock: 'low', stockTxt: 'Sắp hết (2)',
+    img: 'https://tse3.mm.bing.net/th/id/OIP.7VmLaKZRmYVNteH0rdrVdwHaE6?pid=Api&P=0&h=220',
+    imgs: [
+      'https://tse3.mm.bing.net/th/id/OIP.7VmLaKZRmYVNteH0rdrVdwHaE6?pid=Api&P=0&h=220'
+    ],
+    versions: [
+      { label: 'Strong Magnet', price: 720000 },
+      { label: 'Normal Magnet', price: 690000 }
+    ],
+    specs: {
+      'Kích thước': '60mm', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS', 'Trọng lượng': '140g',
+      'Cornercut': '≥40°', 'Bảo hành': '12 tháng', 'Xuất xứ': 'China (QiYi)'
+    },
+    badges: [{ text: 'Stable', cls: 'badge-blue' }]
+  },
+  {
+    id: 4, name: 'Dayan Vin 4x4 M', brand: 'DaYan',
+    price: 680000, oldPrice: null,
+    rating: 4.7, reviews: 42,
+    magnetic: 'Standard Magnet', level: 'Pro',
+    tags: ['new'], stock: 'ins', stockTxt: 'Còn hàng (10)',
+    img: 'https://tse3.mm.bing.net/th/id/OIP.eXO-E0Cn-buxeeViqDiH1gHaE8?pid=Api&P=0&h=220',
+    imgs: [
+      'https://tse3.mm.bing.net/th/id/OIP.eXO-E0Cn-buxeeViqDiH1gHaE8?pid=Api&P=0&h=220'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 680000 }
+    ],
+    specs: {
+      'Kích thước': '58mm', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS', 'Trọng lượng': '128g',
+      'Cornercut': '≥38°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (DaYan)'
+    },
+    badges: [{ text: 'Lightweight', cls: 'badge-green' }]
+  },
+  {
+    id: 5, name: 'YJ MGC 4x4 Magnetic', brand: 'YJ',
+    price: 390000, oldPrice: 450000,
+    rating: 4.9, reviews: 520,
+    magnetic: 'Standard Magnet', level: 'Intermediate',
+    tags: ['best-value'], stock: 'ins', stockTxt: 'Còn hàng (40)',
+    img: 'https://down-my.img.susercontent.com/file/sg-11134201-22120-1xtsghb9d5kvd2',
+    imgs: [
+      'https://down-my.img.susercontent.com/file/sg-11134201-22120-1xtsghb9d5kvd2'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 390000 },
+      { label: 'Black', price: 390000 }
+    ],
+    specs: {
+      'Kích thước': '60mm', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS Plastic', 'Trọng lượng': '115g',
+      'Cornercut': '≥40°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (YJ)'
+    },
+    badges: [{ text: 'Popular', cls: 'badge-gold' }, { text: 'Sale', cls: 'badge-red' }]
+  },
+  {
+    id: 6, name: 'MoYu RS4M Magnetic', brand: 'MoYu',
+    price: 280000, oldPrice: null,
+    rating: 4.6, reviews: 310,
+    magnetic: 'Standard Magnet', level: 'Intermediate',
+    tags: ['budget'], stock: 'ins', stockTxt: 'Còn hàng (50)',
+    img: 'https://dukaan.b-cdn.net/700x700/webp/download-and-upload/5352e3d8-3752-435b-b7f5-c8dc4e81a691.jpeg',
+    imgs: [
+      'https://dukaan.b-cdn.net/700x700/webp/download-and-upload/5352e3d8-3752-435b-b7f5-c8dc4e81a691.jpeg'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 280000 }
+    ],
+    specs: {
+      'Kích thước': '62mm', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS', 'Trọng lượng': '145g',
+      'Cornercut': '≥35°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (MoYu)'
+    },
+    badges: [{ text: 'Budget', cls: 'badge-green' }]
+  },
+  {
+    id: 7, name: 'QiYi MS 4x4 Magnetic', brand: 'QiYi',
+    price: 250000, oldPrice: 300000,
+    rating: 4.5, reviews: 180,
+    magnetic: 'Standard Magnet', level: 'Intermediate',
+    tags: ['sale'], stock: 'ins', stockTxt: 'Còn hàng (20)',
+    img: 'https://tse4.mm.bing.net/th/id/OIP.dm3cFQdJILntqQzfZATCyAHaHa?pid=Api&P=0&h=220',
+    imgs: [
+      'https://tse4.mm.bing.net/th/id/OIP.dm3cFQdJILntqQzfZATCyAHaHa?pid=Api&P=0&h=220'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 250000 }
+    ],
+    specs: {
+      'Kích thước': '60mm', 'Cơ chế từ': 'Standard M',
+      'Vật liệu': 'ABS Plastic', 'Trọng lượng': '138g',
+      'Cornercut': '≥38°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China (QiYi)'
+    },
+    badges: [{ text: 'MS Series', cls: 'badge-blue' }, { text: '-17%', cls: 'badge-red' }]
+  },
+  {
+    id: 8, name: 'YJ YuSu V2 M Magnetic', brand: 'YJ',
+    price: 180000, oldPrice: null,
+    rating: 4.4, reviews: 420,
+    magnetic: 'Standard Magnet', level: 'Beginner',
+    tags: ['entry-level'], stock: 'ins', stockTxt: 'Còn hàng (100)',
+    img: 'https://tse4.mm.bing.net/th/id/OIP.g9vlAe-eL_wbjxYk4UoQigHaHa?pid=Api&P=0&h=220',
+    imgs: [
+      'https://tse4.mm.bing.net/th/id/OIP.g9vlAe-eL_wbjxYk4UoQigHaHa?pid=Api&P=0&h=220'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 180000 }
+    ],
+    specs: {
+      'Kích thước': '61mm', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS Plastic', 'Trọng lượng': '130g',
+      'Cornercut': '≥35°', 'Bảo hành': '3 tháng', 'Xuất xứ': 'China (YJ)'
+    },
+    badges: [{ text: 'Smooth', cls: 'badge-green' }]
+  },
+  {
+    id: 9, name: 'MoYu Meilong 4M v2', brand: 'MoYu',
+    price: 145000, oldPrice: 190000,
+    rating: 4.3, reviews: 1200,
+    magnetic: 'Standard Magnet', level: 'Beginner',
+    tags: ['budget', 'sale'], stock: 'ins', stockTxt: 'Còn hàng (300)',
+    img: 'https://primecube.lk/wp-content/uploads/2025/01/Meilong-4x4-Magnetic-8-1048x1048.webp',
+    imgs: [
+      'https://primecube.lk/wp-content/uploads/2025/01/Meilong-4x4-Magnetic-8-1048x1048.webp'
+    ],
+    versions: [
+      { label: 'Stickerless', price: 145000 }
+    ],
+    specs: {
+      'Kích thước': '59mm', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS', 'Trọng lượng': '112g',
+      'Cornercut': '≥32°', 'Bảo hành': '3 tháng', 'Xuất xứ': 'China (MoYu)'
+    },
+    badges: [{ text: 'Super Cheap', cls: 'badge-red' }]
+  },
+  {
+    id: 10, name: 'ShengShou Mr. M 4x4', brand: 'ShengShou',
+    price: 210000, oldPrice: null,
+    rating: 4.2, reviews: 56,
+    magnetic: 'Standard Magnet', level: 'Beginner',
+    tags: ['classic'], stock: 'ins', stockTxt: 'Còn hàng (15)',
+    img: 'https://tse3.mm.bing.net/th/id/OIP.flEVB-_H547Bqe7kCkvARAHaD4?pid=Api&P=0&h=220',
+    imgs: [
+      'https://tse3.mm.bing.net/th/id/OIP.flEVB-_H547Bqe7kCkvARAHaD4?pid=Api&P=0&h=220'
+    ],
+    versions: [
+      { label: 'Black', price: 210000 }
+    ],
+    specs: {
+      'Kích thước': '62mm', 'Cơ chế từ': 'Magnetic',
+      'Vật liệu': 'ABS Plastic', 'Trọng lượng': '155g',
+      'Cornercut': '≥35°', 'Bảo hành': '6 tháng', 'Xuất xứ': 'China'
+    },
+    badges: [{ text: 'Classic', cls: 'badge-blue' }]
+  }
+];
+var services = [
+  { id: 'lube', icon: '💧', name: 'Setup & Lube chuyên nghiệp', desc: 'Lube mượt, điều chỉnh lực theo yêu cầu', price: 50000 },
+  { id: 'ten',  icon: '🔧', name: 'Điều chỉnh tension',          desc: 'Setup tension tối ưu cho turning style',     price: 30000 },
+  { id: 'gift', icon: '🎁', name: 'Đóng gói quà tặng',           desc: 'Hộp quà cao cấp + thiệp chúc mừng',         price: 25000 },
+  { id: 'war',  icon: '🛡️', name: 'Bảo hành mở rộng 24 tháng',  desc: 'Thêm 12 tháng ngoài bảo hành hãng',         price: 80000 }
+];
+
+/* ---- BIẾN TRẠNG THÁI ---- */
+var cartCount  = 0;
+var currentProduct = null;
+var selectedVersion  = 0;
+var selectedServices = [];  /* mảng id dịch vụ đã chọn */
+var maxPrice   = 2000000;
+var wishlist   = [];        /* mảng id sản phẩm yêu thích */
+
+/* ---- HELPER ---- */
+function formatPrice(n) {
+  return n.toLocaleString('vi-VN') + '₫';
+}
+
+function starsText(rating) {
+  var s = '';
+  for (var i = 1; i <= 5; i++) {
+    s += rating >= i ? '★' : '☆';
+  }
+  return s;
+}
+
+function isInWishlist(id) {
+  for (var i = 0; i < wishlist.length; i++) {
+    if (wishlist[i] === id) return true;
+  }
+  return false;
+}
+
+function addToWishlist(id) {
+  if (!isInWishlist(id)) wishlist.push(id);
+}
+
+function removeFromWishlist(id) {
+  var newList = [];
+  for (var i = 0; i < wishlist.length; i++) {
+    if (wishlist[i] !== id) newList.push(wishlist[i]);
+  }
+  wishlist = newList;
+}
+
+/* ---- RENDER GRID ---- */
+function renderGrid(list) {
+  var grid = document.getElementById('product-grid');
+  document.getElementById('result-count').textContent = list.length;
+
+  if (list.length === 0) {
+    grid.innerHTML = '<div class="no-results"><div class="no-results-icon">🔍</div><div style="font-size:16px;font-weight:700;margin-bottom:6px;">Không tìm thấy sản phẩm</div><div>Thử thay đổi bộ lọc hoặc từ khoá</div></div>';
+    return;
+  }
+
+  var html = '';
+  for (var i = 0; i < list.length; i++) {
+    var p = list[i];
+    var wished = isInWishlist(p.id);
+    var delay  = i * 0.06;
+
+    /* Badges HTML */
+    var badgesHtml = '';
+    for (var b = 0; b < p.badges.length; b++) {
+      badgesHtml += '<span class="badge ' + p.badges[b].cls + '">' + p.badges[b].text + '</span>';
+    }
+
+    /* Old price */
+    var oldPriceHtml = p.oldPrice ? '<span class="product-price-old">' + formatPrice(p.oldPrice) + '</span>' : '';
+
+    html += '<div class="product-card" onclick="openModal(' + p.id + ')" style="animation-delay:' + delay + 's;">' +
+      '<div class="product-thumb">' +
+        '<div class="badge-wrap">' + badgesHtml + '</div>' +
+        '<button class="wishlist-btn ' + (wished ? 'active' : '') + '" onclick="event.stopPropagation(); toggleWishCard(' + p.id + ', this)">' + (wished ? '♥' : '♡') + '</button>' +
+        '<img src="' + p.img + '" alt="' + p.name + '" loading="lazy">' +
+      '</div>' +
+      '<div class="product-info">' +
+        '<div class="product-brand">' + p.brand + '</div>' +
+        '<div class="product-name">' + p.name + '</div>' +
+        '<div class="product-specs">' +
+          '<span class="spec-tag">' + p.magnetic + '</span>' +
+          '<span class="spec-tag">' + p.level + '</span>' +
+        '</div>' +
+        '<div class="product-rating">' +
+          '<span class="stars">' + starsText(p.rating) + '</span>' +
+          '<span class="rating-count">' + p.rating + ' (' + p.reviews + ')</span>' +
+        '</div>' +
+        '<div class="product-footer">' +
+          '<div>' +
+            '<div class="product-price">' + formatPrice(p.price) + '</div>' +
+            oldPriceHtml +
+          '</div>' +
+          '<button class="btn-add-quick" onclick="event.stopPropagation(); quickAddToCart(' + p.id + ')">+ Giỏ</button>' +
+        '</div>' +
+      '</div>' +
+    '</div>';
+  }
+  grid.innerHTML = html;
+}
+
+/* ---- LỌC SẢN PHẨM ---- */
+function updatePrice(value) {
+  maxPrice = parseInt(value) * 1000;
+  var pct = (value / 2000) * 100;
+  document.getElementById('price-slider').style.background =
+    'linear-gradient(90deg, #0072ff ' + pct + '%, rgba(0,180,255,0.15) ' + pct + '%)';
+  document.getElementById('price-label').textContent = (parseInt(value) * 1000).toLocaleString('vi-VN') + '₫';
+  applyFilters();
+}
+
+function applyFilters() {
+  var query = document.getElementById('search-input').value.toLowerCase().trim();
+  var sortBy = document.getElementById('sort-select').value;
+
+  /* Lấy giá trị các checkbox */
+  var brands   = getCheckedValues('brand');
+  var mags     = getCheckedValues('magnetic');
+  var levels   = getCheckedValues('level');
+  var promos   = getCheckedValues('promo');
+
+  /* Đánh giá radio */
+  var starFilter = 0;
+  var starChecked = document.querySelector('input[name="star-filter"]:checked');
+  if (starChecked) starFilter = parseFloat(starChecked.value);
+
+  /* Lọc */
+  var filtered = [];
+  for (var i = 0; i < products.length; i++) {
+    var p = products[i];
+    if (query && p.name.toLowerCase().indexOf(query) === -1 && p.brand.toLowerCase().indexOf(query) === -1) continue;
+    if (p.price > maxPrice) continue;
+    if (brands.length > 0 && !inArray(p.brand, brands)) continue;
+    if (mags.length > 0   && !inArray(p.magnetic, mags)) continue;
+    if (levels.length > 0 && !inArray(p.level, levels)) continue;
+    if (promos.length > 0 && !tagsOverlap(p.tags, promos)) continue;
+    if (starFilter > 0 && p.rating < starFilter) continue;
+    filtered.push(p);
+  }
+
+  /* Sắp xếp */
+  if (sortBy === 'price-asc')  filtered.sort(function(a, b) { return a.price - b.price; });
+  if (sortBy === 'price-desc') filtered.sort(function(a, b) { return b.price - a.price; });
+  if (sortBy === 'rating')     filtered.sort(function(a, b) { return b.rating - a.rating; });
+  if (sortBy === 'newest')     filtered.sort(function(a, b) { return b.id - a.id; });
+
+  renderGrid(filtered);
+  renderFilterChips(brands, mags, levels, promos, starFilter);
+}
+
+function getCheckedValues(filterAttr) {
+  var checked = document.querySelectorAll('[data-filter="' + filterAttr + '"] input:checked');
+  var values = [];
+  for (var i = 0; i < checked.length; i++) {
+    values.push(checked[i].closest('[data-value]').getAttribute('data-value'));
+  }
+  return values;
+}
+
+function inArray(val, arr) {
+  for (var i = 0; i < arr.length; i++) {
+    if (arr[i] === val) return true;
+  }
+  return false;
+}
+
+function tagsOverlap(tags, promos) {
+  for (var i = 0; i < promos.length; i++) {
+    if (inArray(promos[i], tags)) return true;
+  }
+  return false;
+}
+
+/* ---- FILTER CHIPS ---- */
+function renderFilterChips(brands, mags, levels, promos, starFilter) {
+  var wrap = document.getElementById('active-filters');
+  var chips = [];
+
+  for (var i = 0; i < brands.length; i++) chips.push({ label: 'Brand: ' + brands[i],  type: 'brand',    value: brands[i] });
+  for (var i = 0; i < mags.length;   i++) chips.push({ label: 'Từ: '    + mags[i],     type: 'magnetic', value: mags[i]   });
+  for (var i = 0; i < levels.length; i++) chips.push({ label: 'Level: ' + levels[i],   type: 'level',    value: levels[i] });
+  for (var i = 0; i < promos.length; i++) chips.push({ label: 'Ưu đãi: '+ promos[i],   type: 'promo',    value: promos[i] });
+  if (starFilter > 0) chips.push({ label: '⭐ ' + starFilter + ' sao', type: 'star', value: '' });
+
+  if (chips.length === 0) {
+    wrap.style.display = 'none';
+    return;
+  }
+
+  wrap.style.display = 'flex';
+  var html = '<span style="font-size:11px;color:#5a7a99;">Đang lọc:</span>';
+  for (var i = 0; i < chips.length; i++) {
+    html += '<span class="filter-chip" onclick="removeFilterChip(\'' + chips[i].type + '\', \'' + chips[i].value + '\')">' +
+      chips[i].label + ' <span class="chip-x">✕</span></span>';
+  }
+  wrap.innerHTML = html;
+}
+
+function removeFilterChip(type, value) {
+  if (type === 'star') {
+    var radio = document.querySelector('input[name="star-filter"]:checked');
+    if (radio) radio.checked = false;
+  } else {
+    var el = document.querySelector('[data-filter="' + type + '"][data-value="' + value + '"] input');
+    if (el) el.checked = false;
+  }
+  applyFilters();
+}
+
+function resetFilters() {
+  var allCheckboxes = document.querySelectorAll('.filter-check input');
+  for (var i = 0; i < allCheckboxes.length; i++) {
+    allCheckboxes[i].checked = false;
+  }
+  var allRadios = document.querySelectorAll('input[name="star-filter"]');
+  for (var i = 0; i < allRadios.length; i++) {
+    allRadios[i].checked = false;
+  }
+  var slider = document.getElementById('price-slider');
+  slider.value = 2000;
+  maxPrice = 2000000;
+  slider.style.background = 'linear-gradient(90deg, #0072ff 100%, rgba(0,180,255,0.15) 100%)';
+  document.getElementById('price-label').textContent = '2.000.000₫';
+  document.getElementById('search-input').value = '';
+  applyFilters();
+}
+
+/* ---- WISHLIST (CARD) ---- */
+function toggleWishCard(id, btn) {
+  if (isInWishlist(id)) {
+    removeFromWishlist(id);
+    btn.textContent = '♡';
+    btn.classList.remove('active');
+  } else {
+    addToWishlist(id);
+    btn.textContent = '♥';
+    btn.classList.add('active');
+  }
+}
+
+/* ---- QUICK ADD TO CART ---- */
+function quickAddToCart(id) {
+  var p = null;
+  for (var i = 0; i < products.length; i++) {
+    if (products[i].id === id) { p = products[i]; break; }
+  }
+  if (!p) return;
+  cartCount++;
+  updateCartBadge();
+  showToast(p.name, '×1 – Đã thêm vào giỏ!');
+}
+
+function updateCartBadge() {
+  var badge = document.getElementById('cart-count');
+  badge.textContent = cartCount;
+  badge.style.transform = 'scale(1.5)';
+  setTimeout(function() { badge.style.transform = ''; }, 200);
+}
+
+/* ---- MODAL ---- */
+function openModal(id) {
+  currentProduct = null;
+  for (var i = 0; i < products.length; i++) {
+    if (products[i].id === id) { currentProduct = products[i]; break; }
+  }
+  if (!currentProduct) return;
+
+  selectedVersion  = 0;
+  selectedServices = [];
+
+  var p = currentProduct;
+
+  /* Badges */
+  var badgesHtml = '';
+  for (var b = 0; b < p.badges.length; b++) {
+    badgesHtml += '<span class="badge ' + p.badges[b].cls + '">' + p.badges[b].text + '</span>';
+  }
+  document.getElementById('modal-badges').innerHTML = badgesHtml;
+
+  /* Gallery */
+  document.getElementById('modal-main-img').src = p.imgs[0];
+  document.getElementById('modal-main-img').alt = p.name;
+
+  var thumbsHtml = '';
+  for (var t = 0; t < p.imgs.length; t++) {
+    thumbsHtml += '<div class="modal-thumb ' + (t === 0 ? 'active' : '') + '" onclick="switchThumb(this, \'' + p.imgs[t] + '\')">' +
+      '<img src="' + p.imgs[t] + '" alt="thumb">' +
+    '</div>';
+  }
+  document.getElementById('modal-thumbs').innerHTML = thumbsHtml;
+
+  /* Info */
+  document.getElementById('modal-brand').textContent = p.brand;
+  document.getElementById('modal-name').textContent  = p.name;
+  document.getElementById('modal-stars').textContent = starsText(p.rating);
+  document.getElementById('modal-rating-count').textContent = p.rating + '/5 (' + p.reviews + ' đánh giá)';
+  document.getElementById('modal-stock').innerHTML =
+    '<span class="stock-dot ' + p.stock + '"></span>' + p.stockTxt;
+
+  /* Price */
+  document.getElementById('modal-price').textContent = formatPrice(p.price);
+  var oldEl  = document.getElementById('modal-price-old');
+  var discEl = document.getElementById('modal-discount');
+  if (p.oldPrice) {
+    oldEl.textContent = formatPrice(p.oldPrice);
+    var disc = Math.round((1 - p.price / p.oldPrice) * 100);
+    discEl.textContent = '-' + disc + '%';
+    discEl.style.display = 'inline-block';
+  } else {
+    oldEl.textContent = '';
+    discEl.style.display = 'none';
+  }
+
+  /* Versions */
+  var versHtml = '';
+  for (var v = 0; v < p.versions.length; v++) {
+    versHtml += '<button class="version-btn ' + (v === 0 ? 'active' : '') + '" onclick="selectVersion(this, ' + v + ', ' + p.versions[v].price + ')">' +
+      p.versions[v].label + '<br><span style="font-size:11px;opacity:0.7;font-family:\'Exo 2\',sans-serif;">' + formatPrice(p.versions[v].price) + '</span>' +
+    '</button>';
+  }
+  document.getElementById('version-grid').innerHTML = versHtml;
+
+  /* Services */
+  var svcHtml = '';
+  for (var s = 0; s < services.length; s++) {
+    svcHtml += '<div class="service-item" onclick="toggleService(\'' + services[s].id + '\', this)">' +
+      '<span class="service-icon">' + services[s].icon + '</span>' +
+      '<div class="service-text">' +
+        '<div class="service-name">' + services[s].name + '</div>' +
+        '<div class="service-desc">' + services[s].desc + '</div>' +
+      '</div>' +
+      '<span class="service-price">+' + formatPrice(services[s].price) + '</span>' +
+      '<span class="service-check"></span>' +
+    '</div>';
+  }
+  document.getElementById('service-list').innerHTML = svcHtml;
+
+  /* Specs */
+  var specsHtml = '';
+  var keys = Object.keys(p.specs);
+  for (var k = 0; k < keys.length; k++) {
+    specsHtml += '<div class="spec-row"><span class="spec-key">' + keys[k] + '</span><span class="spec-val">' + p.specs[keys[k]] + '</span></div>';
+  }
+  document.getElementById('specs-table').innerHTML = specsHtml;
+
+  /* Wishlist button */
+  var mwb = document.getElementById('modal-wish-btn');
+  if (isInWishlist(p.id)) {
+    mwb.textContent = '♥';
+    mwb.classList.add('active');
+  } else {
+    mwb.textContent = '♡';
+    mwb.classList.remove('active');
+  }
+
+  /* Qty & total */
+  document.getElementById('qty-input').value = 1;
+  updateTotal();
+
+  /* Reset tabs */
+  var tabs   = document.querySelectorAll('.modal-tab');
+  var panels = document.querySelectorAll('.modal-tab-panel');
+  for (var i = 0; i < tabs.length;   i++) tabs[i].classList.remove('active');
+  for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+  tabs[0].classList.add('active');
+  panels[0].classList.add('active');
+
+  /* Show overlay */
+  document.getElementById('overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closeModal() {
+  document.getElementById('overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+function closeModalOnBg(e) {
+  if (e.target === document.getElementById('overlay')) closeModal();
+}
+
+function switchThumb(thumbEl, src) {
+  document.getElementById('modal-main-img').src = src;
+  var thumbs = document.querySelectorAll('.modal-thumb');
+  for (var i = 0; i < thumbs.length; i++) thumbs[i].classList.remove('active');
+  thumbEl.classList.add('active');
+}
+
+function selectVersion(btn, index, price) {
+  var btns = document.querySelectorAll('.version-btn');
+  for (var i = 0; i < btns.length; i++) btns[i].classList.remove('active');
+  btn.classList.add('active');
+  selectedVersion = index;
+  document.getElementById('modal-price').textContent = formatPrice(price);
+  updateTotal();
+}
+
+function toggleService(svcId, el) {
+  /* Kiểm tra đã chọn chưa */
+  var already = false;
+  var newList  = [];
+  for (var i = 0; i < selectedServices.length; i++) {
+    if (selectedServices[i] === svcId) {
+      already = true;
+    } else {
+      newList.push(selectedServices[i]);
+    }
+  }
+  if (already) {
+    selectedServices = newList;
+    el.classList.remove('selected');
+    el.querySelector('.service-check').textContent = '';
+    el.querySelector('.service-check').style.color = 'transparent';
+  } else {
+    selectedServices.push(svcId);
+    el.classList.add('selected');
+    el.querySelector('.service-check').textContent = '✓';
+    el.querySelector('.service-check').style.color = '#fff';
+  }
+  updateTotal();
+}
+
+function updateTotal() {
+  if (!currentProduct) return;
+  var basePrice = currentProduct.versions[selectedVersion]
+    ? currentProduct.versions[selectedVersion].price
+    : currentProduct.price;
+
+  var serviceTotal = 0;
+  for (var i = 0; i < selectedServices.length; i++) {
+    for (var j = 0; j < services.length; j++) {
+      if (services[j].id === selectedServices[i]) {
+        serviceTotal += services[j].price;
+        break;
+      }
+    }
+  }
+
+  var qty = parseInt(document.getElementById('qty-input').value) || 1;
+  document.getElementById('modal-total').textContent = formatPrice((basePrice + serviceTotal) * qty);
+}
+
+function changeQty(delta) {
+  var input = document.getElementById('qty-input');
+  var val   = (parseInt(input.value) || 1) + delta;
+  if (val < 1) val = 1;
+  input.value = val;
+  updateTotal();
+}
+
+function switchModalTab(tabEl, panelId) {
+  var tabs   = document.querySelectorAll('.modal-tab');
+  var panels = document.querySelectorAll('.modal-tab-panel');
+  for (var i = 0; i < tabs.length;   i++) tabs[i].classList.remove('active');
+  for (var i = 0; i < panels.length; i++) panels[i].classList.remove('active');
+  tabEl.classList.add('active');
+  document.getElementById('tab-' + panelId).classList.add('active');
+}
+
+function addToCartFromModal() {
+  if (!currentProduct) return;
+  var qty = parseInt(document.getElementById('qty-input').value) || 1;
+  cartCount += qty;
+  updateCartBadge();
+  var versionLabel = currentProduct.versions[selectedVersion]
+    ? currentProduct.versions[selectedVersion].label
+    : '';
+  showToast(currentProduct.name, versionLabel + ' ×' + qty + ' – Đã thêm vào giỏ!');
+  closeModal();
+}
+
+/* ---- WISHLIST (MODAL) ---- */
+function toggleWishModal() {
+  if (!currentProduct) return;
+  var btn = document.getElementById('modal-wish-btn');
+  if (isInWishlist(currentProduct.id)) {
+    removeFromWishlist(currentProduct.id);
+    btn.textContent = '♡';
+    btn.classList.remove('active');
+  } else {
+    addToWishlist(currentProduct.id);
+    btn.textContent = '♥';
+    btn.classList.add('active');
+  }
+}
+
+/* ---- TOAST ---- */
+function showToast(title, sub) {
+  document.getElementById('toast-title').textContent = title;
+  document.getElementById('toast-sub').textContent   = sub;
+  var toast = document.getElementById('toast');
+  toast.classList.add('show');
+  setTimeout(function() { toast.classList.remove('show'); }, 3200);
+}
+
+/* ---- KHỞI ĐỘNG ---- */
+document.getElementById('price-slider').style.background =
+  'linear-gradient(90deg, #0072ff 100%, rgba(0,180,255,0.15) 100%)';
+renderGrid(products);
+
+/* Đóng modal bằng phím Escape */
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') closeModal();
+});
+
+</script>
+<script src = "carts.js"> </script>
+</body>
+</html>
