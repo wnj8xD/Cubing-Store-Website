@@ -461,8 +461,8 @@ input[type="range"]::-webkit-slider-thumb {
 }
 
 .product-thumb img {
-  width: 170px;
-  height: 170px;
+  width: 60%;
+  height: 100%;
   object-fit: cover;
   padding: 20px;
   transition: transform 0.4s ease;
@@ -676,8 +676,7 @@ input[type="range"]::-webkit-slider-thumb {
 .modal-main-img {
   width: 100%;
   aspect-ratio: 1;
-  padding: 20px;
-  object-fit: cover;
+  object-fit: contain;
   border-radius: 12px;
   background: rgba(0, 180, 255, 0.03);
 }
@@ -707,9 +706,8 @@ input[type="range"]::-webkit-slider-thumb {
 .modal-thumb img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   padding: 6px;
-  border-radius: 5px;
 }
 
 .modal-badges {
@@ -717,8 +715,8 @@ input[type="range"]::-webkit-slider-thumb {
   top: 16px;
   left: 16px;
   display: flex;
-  flex-direction: row; /* Thay đổi từ column sang row */
-  gap: 8px;            /* Bạn có thể tăng nhẹ gap để các badge thưa nhau hơn khi nằm ngang */
+  flex-direction: column;
+  gap: 5px;
 }
 
 /* Modal close */
@@ -1119,7 +1117,7 @@ input[type="range"]::-webkit-slider-thumb {
      ============================== -->
 <div id="top-bar">
   <div class="top-bar-inner">
-    <a href="#" class="logo">
+    <a href="index.html" class="logo">
       <div class="logo-icon">
         <span></span><span></span><span></span>
         <span></span><span></span><span></span>
@@ -1128,15 +1126,13 @@ input[type="range"]::-webkit-slider-thumb {
       CUBE<span class="logo-blue">VERSE</span>
     </a>
 
-<div class="breadcrumb">
-    <a href="index.html">Trang chủ</a>
-    <span class="breadcrumb-sep">›</span>
-    
-    <a href="index.html#shop-category">Cubes</a>
-    
-    <span class="breadcrumb-sep">›</span>
-    <span style="color:#e8f4ff">2×2 Cubes</span>
-</div>
+    <div class="breadcrumb">
+      <a href="index.html">Trang chủ</a>
+      <span class="breadcrumb-sep">›</span>
+      <a href="index.html#shop-category">Cubes</a>
+      <span class="breadcrumb-sep">›</span>
+      <span style="color:#e8f4ff">3×3 Cubes</span>
+    </div>
 
     <div class="top-right">
       <div class="cart-pill" id="cart-pill">
@@ -1181,31 +1177,31 @@ input[type="range"]::-webkit-slider-thumb {
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">GAN</span>
-          <span class="check-count">2</span>
+          <span class="check-count">8</span>
         </label>
         <label class="filter-check" data-filter="brand" data-value="MoYu">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">MoYu</span>
-          <span class="check-count">2</span>
+          <span class="check-count">6</span>
         </label>
         <label class="filter-check" data-filter="brand" data-value="QiYi">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">QiYi</span>
-          <span class="check-count">1</span>
+          <span class="check-count">5</span>
         </label>
-        <label class="filter-check" data-filter="brand" data-value="CMATH">
+        <label class="filter-check" data-filter="brand" data-value="X-Man">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
-          <span class="check-label">CMATH</span>
-          <span class="check-count">1</span>
+          <span class="check-label">X-Man Design</span>
+          <span class="check-count">4</span>
         </label>
         <label class="filter-check" data-filter="brand" data-value="DaYan">
           <input type="checkbox" onchange="applyFilters()">
           <span class="check-box">✓</span>
           <span class="check-label">DaYan</span>
-          <span class="check-count">2</span>
+          <span class="check-count">3</span>
         </label>
       </div>
     </div>
@@ -1449,15 +1445,15 @@ input[type="range"]::-webkit-slider-thumb {
 /* ---- DỮ LIỆU SẢN PHẨM (ĐÃ CẬP NHẬT 3X3 MỚI NHẤT 2026) ---- */
 var products = [
   {
-    id: 1, name: 'GAN 15 Maglev UV', brand: 'GAN',
+    id: 1, name: 'GAN 16 Maglev UV', brand: 'GAN',
     price: 1290000, oldPrice: 1615000,
     rating: 4.9, reviews: 248,
     magnetic: 'Maglev', level: 'Pro',
     tags: ['sale', 'wca'], stock: 'ins', stockTxt: 'Còn hàng (12)',
     // GIỮ NGUYÊN LINK ẢNH CỦA BẠN
-    img: 'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSwv1Z03EyD8mIJCv-2cT87ZAAixYDgvV5BmCwhPraRGd8BpugvYCZCvQVbW-VNqvSFZlPs7lneCO-hy4g_03RvVe4dQqQm87txrEzoCfo8n6EibpR178xu',
+    img: 'https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m23hfn2npece1d',
     imgs: [
-      'https://encrypted-tbn2.gstatic.com/shopping?q=tbn:ANd9GcSwv1Z03EyD8mIJCv-2cT87ZAAixYDgvV5BmCwhPraRGd8BpugvYCZCvQVbW-VNqvSFZlPs7lneCO-hy4g_03RvVe4dQqQm87txrEzoCfo8n6EibpR178xu',
+      'https://down-vn.img.susercontent.com/file/vn-11134207-7ras8-m23hfn2npece1d',
       'https://www.speedcubeuk.co.uk/wp-content/uploads/2024/02/Gan-14-maglev-s-02.jpg',
       'https://kewbz.co.uk/cdn/shop/files/GAN14MagLev3x3.webp?v=1773607256&width=1946'
     ],
@@ -1636,7 +1632,6 @@ var products = [
     rating: 5.0, reviews: 12,
     magnetic: 'Maglev 2.0', level: 'Pro',
     tags: ['new', 'wca'], stock: 'ins', stockTxt: 'Hàng mới về (5)',
-    // Bạn hãy thay link ảnh GAN 16 của bạn vào đây nhé
     img: 'https://kupsepeti.com/cdn/shop/files/4_223c09ff-25e5-4161-9ee8-f754891a1c3a.png?v=1756397604&width=1445',
     imgs: [
       'https://kupsepeti.com/cdn/shop/files/4_223c09ff-25e5-4161-9ee8-f754891a1c3a.png?v=1756397604&width=1445',
@@ -1664,7 +1659,6 @@ var products = [
     rating: 3.6, reviews: 69,
     magnetic: 'No Magnet', level: 'Pro',
     tags: ['new', 'wca'], stock: 'ins', stockTxt: 'Hàng mới về (5)',
-    // Bạn hãy thay link ảnh GAN 16 của bạn vào đây nhé
     img: 'https://i.postimg.cc/xjLmrfNf/IMG_20260407_151006.png',
     imgs: [
       'https://i.postimg.cc/xjLmrfNf/IMG_20260407_151006.png',
@@ -2192,7 +2186,9 @@ document.addEventListener('keydown', function(e) {
   if (e.key === 'Escape') closeModal();
 });
 
+
+
 </script>
-<script src = "carts.js"> </script>
+<script src="carts.js"></script>
 </body>
 </html>
