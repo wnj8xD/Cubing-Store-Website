@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Thanh toán thành công | CubeVerse</title>
+    <link href="https://fonts.googleapis.com/css2?family=Exo+2:wght@400;700;900&family=Be+Vietnam+Pro:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #050d1a;
+            --card-bg: rgba(13, 25, 48, 0.85);
+            --accent: #0072ff;
+            --accent-light: #00d4ff;
+            --text: #e8f4ff;
+            --border: rgba(0, 114, 255, 0.3);
+            --success: #00ff88;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Be Vietnam Pro', sans-serif;
+            background-image: radial-gradient(circle at 50% 50%, #102a4d 0%, #050d1a 100%);
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            overflow: hidden;
+        }
+
+        .success-card {
+            background: var(--card-bg);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 50px 30px;
+            text-align: center;
+            backdrop-filter: blur(15px);
+            max-width: 500px;
+            width: 90%;
+            box-shadow: 0 0 50px rgba(0, 114, 255, 0.2);
+            animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        @keyframes slideUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .icon-box {
+            width: 80px;
+            height: 80px;
+            background: rgba(0, 255, 136, 0.1);
+            border: 2px solid var(--success);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto 25px;
+            box-shadow: 0 0 20px rgba(0, 255, 136, 0.3);
+        }
+
+        .icon-box svg {
+            width: 45px;
+            height: 45px;
+            fill: none;
+            stroke: var(--success);
+            stroke-width: 3;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+            stroke-dasharray: 100;
+            stroke-dashoffset: 100;
+            animation: drawCheck 0.8s forwards 0.4s;
+        }
+
+        @keyframes drawCheck {
+            to { stroke-dashoffset: 0; }
+        }
+
+        h1 {
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 900;
+            font-size: 2rem;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            background: linear-gradient(to right, #fff, var(--accent-light));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        p {
+            opacity: 0.8;
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+
+        .order-id {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.05);
+            padding: 8px 15px;
+            border-radius: 6px;
+            font-family: monospace;
+            color: var(--accent-light);
+            margin-bottom: 30px;
+            border: 1px dashed var(--border);
+        }
+
+        .btn-home {
+            display: inline-block;
+            padding: 15px 40px;
+            background: linear-gradient(90deg, var(--accent), var(--accent-light));
+            color: white;
+            text-decoration: none;
+            font-family: 'Exo 2', sans-serif;
+            font-weight: 800;
+            border-radius: 10px;
+            text-transform: uppercase;
+            transition: 0.3s;
+            box-shadow: 0 4px 15px rgba(0, 114, 255, 0.4);
+        }
+
+        .btn-home:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 25px rgba(0, 212, 255, 0.6);
+            filter: brightness(1.1);
+        }
+
+        /* Trang trí hạt (particles) xung quanh */
+        .decor {
+            position: absolute;
+            width: 10px;
+            height: 10px;
+            background: var(--accent-light);
+            border-radius: 50%;
+            filter: blur(2px);
+            opacity: 0.3;
+            z-index: -1;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="success-card">
+        <div class="icon-box">
+            <svg viewBox="0 0 24 24">
+                <polyline points="20 6 9 17 4 12"></polyline>
+            </svg>
+        </div>
+        <h1>Thành công!</h1>
+        <p>Cảm ơn bạn đã tin tưởng <b>CubeVerse</b>. Đơn hàng của bạn đã được tiếp nhận và đang trong quá trình xử lý.</p>
+        
+        <div class="order-id">Mã đơn hàng: #CV<span id="rand-id"></span></div>
+
+        <br>
+        <a href="index.html" class="btn-home">Quay về trang chủ</a>
+    </div>
+
+    <script>
+        // Tạo mã đơn hàng ngẫu nhiên
+        document.getElementById('rand-id').textContent = Math.floor(100000 + Math.random() * 900000);
+
+        // Tạo một vài đốm sáng trang trí
+        for(let i=0; i<15; i++) {
+            let dot = document.createElement('div');
+            dot.className = 'decor';
+            dot.style.top = Math.random() * 100 + '%';
+            dot.style.left = Math.random() * 100 + '%';
+            dot.style.transform = `scale(${Math.random() * 2})`;
+            document.body.appendChild(dot);
+        }
+    </script>
+</body>
+</html>
